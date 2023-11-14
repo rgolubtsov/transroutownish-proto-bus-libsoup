@@ -14,9 +14,18 @@
 #include "busd.h"
 
 // The microservice entry point.
-int main() {
-    puts(MSG_SERVER_STARTED);
-    puts(MSG_SERVER_STOPPED);
+int main(int argc, char *const *argv) {
+    char *daemon_name = argv[0];
+    unsigned short server_port;
+
+    if (argc > 1) {
+        server_port = atoi(argv[1]);
+    } else {
+        server_port = DEF_PORT;
+    }
+
+    printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
+    printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
 }
 
 // vim:set nu et ts=4 sw=4:
