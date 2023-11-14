@@ -14,10 +14,18 @@
 #ifndef BUSD_H
 #define BUSD_H
 
+#include <stdlib.h>
 #include <stdio.h>
 
-#define MSG_SERVER_STARTED "Server started on port "
-#define MSG_SERVER_STOPPED "Server stopped"
+// Helper constants.
+#define NEW_LINE "\n"
+
+// Common notification messages.
+#define MSG_SERVER_STARTED "%s: Server started on port %u"
+#define MSG_SERVER_STOPPED "%s: Server stopped"
+
+/** The default server port number. */
+#define DEF_PORT 8080
 
 #endif//BUSD_H
 
