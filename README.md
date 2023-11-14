@@ -39,7 +39,40 @@ One may consider this project has to be suitable for a wide variety of applied a
 ## Table of Contents
 
 * **[Building](#building)**
+* **[Running](#running)**
 
 ## Building
+
+The microservice is known to be built and run successfully under **Ubuntu Server (Ubuntu 22.04.3 LTS x86-64)**. Install the necessary dependencies (`build-essential`, `docker.io`):
+
+```
+$ sudo apt-get update && \
+  sudo apt-get install build-essential docker.io -y
+```
+
+**Build** the microservice using **GNU Make**:
+
+```
+$ make clean
+rm -f -vR bin src/busd.o
+$
+$ make      # <== Compilation phase.
+cc -o bin/busd   -c -o src/busd.o src/busd.c
+$
+$ make all  # <== Building the daemon.
+if [ ! -d bin ]; then \
+    mkdir bin; \
+fi
+cc -o bin/busd src/busd.o
+```
+
+## Running
+
+**Run** the microservice using its executable directly, built previously by the `all` target:
+
+```
+$ ./bin/busd; echo $?
+...
+```
 
 **TBD** :dvd:
