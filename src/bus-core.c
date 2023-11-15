@@ -11,9 +11,19 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
+// The main module of the daemon ----------------------------------------------
+
 #include "busd.h"
 
-// The microservice entry point.
+/**
+ * The microservice entry point.
+ *
+ * @param argc The number of command-line arguments + 1 (the daemon name).
+ * @param argv The pointer to an array of command-line arguments,
+ *             including the daemon name.
+ *
+ * @returns The exit code of the overall termination of the daemon.
+ */
 int main(int argc, char *const *argv) {
     char *daemon_name = argv[0];
     unsigned short server_port;
@@ -23,6 +33,9 @@ int main(int argc, char *const *argv) {
     } else {
         server_port = DEF_PORT;
     }
+
+    // Getting the daemon settings.
+    _get_settings();
 
     printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
     printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
