@@ -57,13 +57,13 @@ $ make clean
 rm -f -vR bin src/busd.o
 $
 $ make      # <== Compilation phase.
-cc -o bin/busd   -c -o src/busd.o src/busd.c
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd   -c -o src/busd.o src/busd.c
 $
 $ make all  # <== Building the daemon.
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-cc -o bin/busd src/busd.o
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd src/busd.o
 ```
 
 ## Running

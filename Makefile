@@ -19,13 +19,16 @@ EXEC = $(BIN_DIR)/$(PREF)
 DEPS = $(SRC_DIR)/$(PREF).o
 
 # Specify flags and other vars here.
+CSTD   = c99
+CFLAGS = -Wall -pedantic -std=$(CSTD) -march=x86-64 -O3 -pipe
+
 MKDIR   = mkdir
 RMFLAGS = -vR
 
 # Making the first target (object files).
 $(DEPS): %.o: %.c
 
-CFLAGS=-o $(EXEC)
+CFLAGS += -o $(EXEC)
 
 # Making the second target (the microservice itself).
 $(EXEC): $(DEPS)
