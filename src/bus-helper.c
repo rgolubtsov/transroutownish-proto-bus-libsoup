@@ -1,5 +1,5 @@
 /*
- * src/busd.h
+ * src/bus-helper.c
  * ============================================================================
  * Urban bus routing microservice prototype (C port). Version 0.0.1
  * ============================================================================
@@ -11,25 +11,13 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
-#ifndef BUSD_H
-#define BUSD_H
+// The helper module for the daemon -------------------------------------------
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "busd.h"
 
-// Helper constants.
-#define NEW_LINE "\n"
-
-// Common notification messages.
-#define MSG_SERVER_STARTED "%s: Server started on port %u"
-#define MSG_SERVER_STOPPED "%s: Server stopped"
-
-/** The default server port number. */
-#define DEF_PORT 8080
-
-// Helper protos.
-char *_get_settings();
-
-#endif//BUSD_H
+// Helper function. Used to get the daemon settings.
+char *_get_settings() {
+    return NULL;
+}
 
 // vim:set nu et ts=4 sw=4:
