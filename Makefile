@@ -14,9 +14,10 @@
 BIN_DIR = bin
 SRC_DIR = src
 
-PREF = busd
-EXEC = $(BIN_DIR)/$(PREF)
-DEPS = $(SRC_DIR)/$(PREF).o
+PREF = bus
+EXEC = $(BIN_DIR)/$(PREF)d
+DEPS = $(SRC_DIR)/$(PREF)-core.o \
+       $(SRC_DIR)/$(PREF)-helper.o
 
 # Specify flags and other vars here.
 CSTD   = c99
