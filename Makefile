@@ -27,7 +27,8 @@ MKDIR   = mkdir
 RMFLAGS = -vR
 
 # Making the first target (object files).
-$(DEPS): %.o: %.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 CFLAGS += -o $(EXEC)
 
