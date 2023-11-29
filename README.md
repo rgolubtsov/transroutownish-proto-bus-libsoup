@@ -54,16 +54,15 @@ $ sudo apt-get update && \
 
 ```
 $ make clean
-rm -f -vR bin src/busd.o
-$
-$ make      # <== Compilation phase.
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd   -c -o src/busd.o src/busd.c
+rm -f -vR bin src/bus-core.o src/bus-helper.o
 $
 $ make all  # <== Building the daemon.
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd -c src/bus-core.c -o src/bus-core.o
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd -c src/bus-helper.c -o src/bus-helper.o
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd src/busd.o
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd src/bus-core.o src/bus-helper.o
 ```
 
 ## Running
