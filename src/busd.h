@@ -18,7 +18,12 @@
 #include <stdio.h>
 
 // Helper constants.
-#define NEW_LINE "\n"
+#define EMPTY_STRING ""
+#define SPACE       " "
+#define SLASH       "/"
+#define EQUALS      "="
+#define V_BAR       "|"
+#define NEW_LINE   "\n"
 
 // Common notification messages.
 #define MSG_SERVER_STARTED "%s: Server started on port %u"
