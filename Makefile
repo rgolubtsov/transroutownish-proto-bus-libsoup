@@ -26,6 +26,9 @@ CFLAGS = -Wall -pedantic -std=$(CSTD) -march=x86-64 -O3 -pipe
 MKDIR   = mkdir
 RMFLAGS = -vR
 
+CFLAGS += `pkg-config --cflags-only-I glib-2.0`
+LDLIBS  = `pkg-config   --libs-only-l glib-2.0`
+
 # Making the first target (object files).
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -37,7 +40,7 @@ $(EXEC): $(DEPS)
 	if [ ! -d $(BIN_DIR) ]; then \
 	    $(MKDIR) $(BIN_DIR); \
 	fi
-	$(CC) $(CFLAGS) $(DEPS)
+	$(CC) $(CFLAGS) $(LDLIBS) $(DEPS)
 
 .PHONY: all clean
 

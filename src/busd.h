@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <glib.h>
+
 // Helper constants.
 #define EMPTY_STRING ""
 #define SPACE       " "
@@ -33,7 +35,7 @@
 #define DEF_PORT 8080
 
 // Helper protos.
-char *_get_settings();
+GKeyFile *_get_settings();
 
 #endif//BUSD_H
 

@@ -16,8 +16,13 @@
 #include "busd.h"
 
 // Helper function. Used to get the daemon settings.
-char *_get_settings() {
-    return NULL;
+GKeyFile *_get_settings() {
+    GKeyFile *settings = g_key_file_new();
+
+    g_key_file_load_from_file(settings,
+        "./etc/settings.conf", G_KEY_FILE_NONE, NULL);
+
+    return settings;
 }
 
 // vim:set nu et ts=4 sw=4:
