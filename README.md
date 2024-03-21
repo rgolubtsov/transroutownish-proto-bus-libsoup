@@ -57,12 +57,12 @@ $ make clean
 rm -f -vR bin src/bus-core.o src/bus-helper.o
 $
 $ make all  # <== Building the daemon.
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd -c src/bus-core.c -o src/bus-core.o
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd -c src/bus-helper.c -o src/bus-helper.o
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I glib-2.0` src/bus-core.c -o src/bus-core.o
+cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I glib-2.0` src/bus-helper.c -o src/bus-helper.o
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -o bin/busd src/bus-core.o src/bus-helper.o
+tcc `pkg-config   --libs-only-l glib-2.0` -o bin/busd src/bus-core.o src/bus-helper.o
 ```
 
 ## Running
