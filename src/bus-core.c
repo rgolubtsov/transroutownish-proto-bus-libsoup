@@ -37,6 +37,10 @@ int main(int argc, char *const *argv) {
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
 
+    if (settings != NULL) {
+        printf("=== %s ===" NEW_LINE, (char *) settings);
+    }
+
     printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
 
     g_free(settings);

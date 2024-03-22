@@ -18,9 +18,21 @@
 // Helper function. Used to get the daemon settings.
 GKeyFile *_get_settings() {
     GKeyFile *settings = g_key_file_new();
+    GError   *error    = NULL;
 
-    g_key_file_load_from_file(settings,
-        "./etc/settings.conf", G_KEY_FILE_NONE, NULL);
+    gboolean is_loaded = g_key_file_load_from_file(settings,
+        "./etc/settings.conf", G_KEY_FILE_NONE, &error);
+
+    if (!is_loaded) {
+        gboolean is_failed = g_error_matches(error, G_FILE_ERROR,
+            G_FILE_ERROR_NOENT);
+
+        if (is_failed) {
+            g_warning(ERR_SETTINGS_NOT_FOUND, error->message);
+        }
+
+        return NULL;
+    }
 
     return settings;
 }

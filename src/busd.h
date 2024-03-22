@@ -27,6 +27,9 @@
 #define V_BAR       "|"
 #define NEW_LINE   "\n"
 
+// Common error messages.
+#define ERR_SETTINGS_NOT_FOUND "Daemon settings file not found: %s"
+
 // Common notification messages.
 #define MSG_SERVER_STARTED "%s: Server started on port %u"
 #define MSG_SERVER_STOPPED "%s: Server stopped"
