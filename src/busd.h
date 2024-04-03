@@ -37,8 +37,22 @@
 /** The default server port number. */
 #define DEF_PORT 8080
 
+/** The path and filename of the daemon settings. */
+#define SETTINGS "./etc/settings.conf"
+
+// Daemon settings keys for the server port number.
+#define SERVER_GROUP "Server"
+#define SERVER_PORT  "port"
+
+// Daemon settings keys for the logger.
+#define LOGGER_GROUP "Logger"
+#define LOG_ENABLED  "debug.enabled"
+
 // Helper protos.
 GKeyFile *_get_settings();
+
+gboolean is_debug_log_enabled(GKeyFile *);
+unsigned short get_server_port(GKeyFile *);
 
 #endif//BUSD_H
 
