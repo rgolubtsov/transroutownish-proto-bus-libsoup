@@ -27,12 +27,6 @@
 int main(int argc, char *const *argv) {
     char *daemon_name = argv[0];
 
-/*  if (argc > 1) {
-        server_port = atoi(argv[1]);
-    } else {
-        server_port = DEF_PORT;
-    }*/
-
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
 
