@@ -26,25 +26,34 @@
  */
 int main(int argc, char *const *argv) {
     char *daemon_name = argv[0];
-    unsigned short server_port;
 
-    if (argc > 1) {
+/*  if (argc > 1) {
         server_port = atoi(argv[1]);
     } else {
         server_port = DEF_PORT;
-    }
+    }*/
 
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
 
-    if (settings != NULL) {
-        printf("=== %s ===" NEW_LINE, (char *) settings);
-    }
+    unsigned short server_port = DEF_PORT;
+    gboolean debug_log_enabled = TRUE;
 
-    printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
+    if (settings != NULL) {
+        printf("=== Settings loaded ===" NEW_LINE);
+
+        // Getting the port number used to run the server,
+        // from daemon settings.
+        server_port = get_server_port(settings);
+
+        // Identifying whether debug logging is enabled.
+        debug_log_enabled = is_debug_log_enabled(settings);
+    }
 
     g_free(settings);
 
+    printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
+    printf("=== %u ===" NEW_LINE, debug_log_enabled);
     printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
 }
 
