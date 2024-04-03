@@ -43,7 +43,7 @@ One may consider this project has to be suitable for a wide variety of applied a
 
 ## Building
 
-The microservice is known to be built and run successfully under **Ubuntu Server (Ubuntu 22.04.3 LTS x86-64)**. Install the necessary dependencies (`build-essential`, `tcc`, `libsoup-3.0-dev`, `docker.io`):
+The microservice is known to be built and run successfully under **Ubuntu Server (Ubuntu 22.04.4 LTS x86-64)**. Install the necessary dependencies (`build-essential`, `tcc`, `libsoup-3.0-dev`, `docker.io`):
 
 ```
 $ sudo apt-get update && \
