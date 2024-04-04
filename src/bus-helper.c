@@ -29,11 +29,15 @@ unsigned short get_server_port(GKeyFile *settings) {
     unsigned short server_port
         = g_key_file_get_integer(settings, SERVER_GROUP, SERVER_PORT, &error);
 
-    if (server_port == 0) {
-        server_port = DEF_PORT;
+    if (server_port != 0) {
+        if ((server_port >= MIN_PORT) && (server_port <= MAX_PORT)) {
+            return server_port;
+        } else {
+            g_warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
+        }
+    } else {
+        g_warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
     }
-
-    return server_port;
 }
 
 /**
