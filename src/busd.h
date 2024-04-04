@@ -48,11 +48,18 @@
 #define LOGGER_GROUP "Logger"
 #define LOG_ENABLED  "debug.enabled"
 
+// Daemon settings keys for the routes data store.
+#define ROUTES_GROUP "Routes"
+#define PATH_PREFIX  "datastore.path.prefix"
+#define PATH_DIR     "datastore.path.dir"
+#define FILENAME     "datastore.filename"
+
 // Helper protos.
 GKeyFile *_get_settings();
 
-gboolean is_debug_log_enabled(GKeyFile *);
 unsigned short get_server_port(GKeyFile *);
+gboolean is_debug_log_enabled(GKeyFile *);
+gchar *get_routes_datastore(GKeyFile *);
 
 #endif//BUSD_H
 
