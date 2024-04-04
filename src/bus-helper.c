@@ -55,6 +55,46 @@ gboolean is_debug_log_enabled(GKeyFile *settings) {
     return debug_log_enabled;
 }
 
+/**
+ * Retrieves the path and filename of the routes data store
+ * from daemon settings.
+ *
+ * @param settings The pointer to a structure containing key-value pairs
+ *                 of individual settings.
+ *
+ * @return The path and filename of the routes data store
+ *         or <code>NULL</code>, if they are not defined.
+ */
+gchar *get_routes_datastore(GKeyFile *settings) {
+    GError *error = NULL;
+
+    gchar *path_prefix
+        = g_key_file_get_string(settings, ROUTES_GROUP, PATH_PREFIX, &error);
+    error = NULL;
+    gchar *path_dir
+        = g_key_file_get_string(settings, ROUTES_GROUP, PATH_DIR,    &error);
+    error = NULL;
+    gchar *filename
+        = g_key_file_get_string(settings, ROUTES_GROUP, FILENAME,    &error);
+
+    gchar *datastore = EMPTY_STRING;
+
+    if (path_prefix != NULL) {
+        datastore = g_strconcat(datastore, path_prefix, NULL); }
+    if (path_dir    != NULL) {
+        datastore = g_strconcat(datastore, path_dir,    NULL); }
+    if (filename    != NULL) {
+        datastore = g_strconcat(datastore, filename,    NULL); }
+
+    g_free(filename   );
+    g_free(path_dir   );
+    g_free(path_prefix);
+
+    if (g_utf8_strlen(datastore, -1) == 0) { return NULL; }
+
+    return datastore;
+}
+
 // Helper function. Used to get the daemon settings.
 GKeyFile *_get_settings() {
     GKeyFile *settings = g_key_file_new();
