@@ -32,22 +32,30 @@ int main(int argc, char *const *argv) {
 
     unsigned short server_port = DEF_PORT;
     gboolean debug_log_enabled = TRUE;
+    gchar *datastore = EMPTY_STRING;
 
     if (settings != NULL) {
-        printf("=== Settings loaded ===" NEW_LINE);
-
         // Getting the port number used to run the server,
         // from daemon settings.
         server_port = get_server_port(settings);
 
         // Identifying whether debug logging is enabled.
         debug_log_enabled = is_debug_log_enabled(settings);
+
+        // Getting the path and filename of the routes data store
+        // from daemon settings.
+        datastore = get_routes_datastore(settings);
     }
 
     g_free(settings);
 
     printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
+
     printf("=== %u ===" NEW_LINE, debug_log_enabled);
+    printf("=== %s ===" NEW_LINE, datastore);
+
+    g_free(datastore);
+
     printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
 }
 
