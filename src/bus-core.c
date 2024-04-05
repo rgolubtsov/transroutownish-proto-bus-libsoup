@@ -51,22 +51,20 @@ int main(int argc, char *const *argv) {
 
     if (datastore == NULL) { datastore = SAMPLE_ROUTES; }
 
-    FILE* data = fopen(datastore, "r");
+    GFile *data = g_file_new_for_path(datastore);
 
-    if (data == NULL) {
+    if (!g_file_query_exists(data, NULL)) {
         g_warning(ERR_DATASTORE_NOT_FOUND);
 
+        g_object_unref(data);
         g_free(datastore);
 
         g_abort();
     }
 
-    fclose(data);
+    g_object_unref(data);
 
     printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
-
-    printf("=== %u ===" NEW_LINE, debug_log_enabled);
-    printf("=== %s ===" NEW_LINE, datastore);
 
     g_free(datastore);
 
