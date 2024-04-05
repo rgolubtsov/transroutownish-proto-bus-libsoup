@@ -27,7 +27,7 @@ MKDIR   = mkdir
 RMFLAGS = -vR
 
 CFLAGS += `pkg-config --cflags-only-I glib-2.0`
-LDLIBS  = `pkg-config   --libs-only-l glib-2.0`
+LDLIBS  = `pkg-config   --libs-only-l glib-2.0 gio-unix-2.0`
 LDFLAGS = -o $(EXEC)
 
 # Making the first target (object files).

@@ -18,6 +18,7 @@
 #include <stdio.h>
 
 #include <glib.h>
+#include <gio/gio.h>
 
 // Helper constants.
 #define EMPTY_STRING ""
