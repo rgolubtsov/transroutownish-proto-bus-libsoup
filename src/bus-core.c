@@ -31,7 +31,7 @@ int main(int argc, char *const *argv) {
     GKeyFile *settings = _get_settings();
 
     unsigned short server_port = DEF_PORT;
-    gboolean debug_log_enabled = TRUE;
+    gboolean debug_log_enabled __attribute__ ((unused)) = TRUE;
     gchar *datastore = EMPTY_STRING;
 
     if (settings != NULL) {

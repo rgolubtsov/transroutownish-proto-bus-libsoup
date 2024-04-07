@@ -62,7 +62,7 @@ cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-tcc `pkg-config   --libs-only-l glib-2.0` -o bin/busd src/bus-core.o src/bus-helper.o
+tcc `pkg-config   --libs-only-l glib-2.0 gio-unix-2.0` -o bin/busd src/bus-core.o src/bus-helper.o
 ```
 
 ## Running
