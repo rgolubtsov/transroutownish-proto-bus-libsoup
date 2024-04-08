@@ -61,7 +61,7 @@ int main(int argc, char *const *argv) {
         g_object_unref(data);
         g_free(datastore);
 
-        g_abort();
+        exit(EXIT_FAILURE);
     }
 
     g_object_unref(data);
