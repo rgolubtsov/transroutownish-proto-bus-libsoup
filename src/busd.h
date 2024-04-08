@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define G_LOG_USE_STRUCTURED // <== To use structured logging.
+
 #include <glib.h>
 #include <gio/gio.h>
 
