@@ -33,10 +33,10 @@ unsigned short get_server_port(GKeyFile *settings) {
         if ((server_port >= MIN_PORT) && (server_port <= MAX_PORT)) {
             return server_port;
         } else {
-            g_warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
+            g_message(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
         }
     } else {
-        g_warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
+        g_message(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
     }
 }
 
@@ -112,7 +112,7 @@ GKeyFile *_get_settings() {
             = g_error_matches(error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
 
         if (is_failed) {
-            g_warning(ERR_SETTINGS_NOT_FOUND, error->message);
+            g_message(ERR_SETTINGS_NOT_FOUND, error->message);
         }
 
         return NULL;
