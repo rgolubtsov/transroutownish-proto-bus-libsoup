@@ -45,16 +45,18 @@ int main(int argc, char *const *argv) {
         // Getting the path and filename of the routes data store
         // from daemon settings.
         datastore = get_routes_datastore(settings);
+
+        g_free(settings);
     }
 
-    g_free(settings);
-
-    if (datastore == NULL) { datastore = SAMPLE_ROUTES; }
+    if ((datastore == NULL) || (g_utf8_strlen(datastore, -1) == 0)) {
+        datastore = g_strdup(SAMPLE_ROUTES);
+    }
 
     GFile *data = g_file_new_for_path(datastore);
 
     if (!g_file_query_exists(data, NULL)) {
-        g_warning(ERR_DATASTORE_NOT_FOUND);
+        g_message(ERR_DATASTORE_NOT_FOUND);
 
         g_object_unref(data);
         g_free(datastore);
