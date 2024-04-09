@@ -16,6 +16,34 @@
 #include "busd.h"
 
 /**
+ * The log writer callback. Gets called on every message logging attempt.
+ *
+ * @param log_level The log level of the message.
+ * @param fields    An array of fields forming the message.
+ * @param n_fields  The number of <code>fields</code>.
+ * @param user_data An arbitrary data that is passed
+ *                  to the <code>g_log_set_writer_func()</code> setter.
+ *
+ * @return <code>G_LOG_WRITER_HANDLED</code> if the log entry was handled
+ *         successfully, <code>G_LOG_WRITER_UNHANDLED</code> otherwise.
+ */
+GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
+                            const GLogField      *fields,
+                                  gsize           n_fields,
+                                  gpointer        user_data) {
+
+    for (gsize i = 0; i < n_fields; i++) {
+        if ((log_level == G_LOG_LEVEL_MESSAGE)
+            && (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0)) {
+
+            fprintf(stderr, "%s" NEW_LINE, (char *) fields[i].value);
+        }
+    }
+
+    return G_LOG_WRITER_HANDLED;
+}
+
+/**
  * Retrieves the port number used to run the server, from daemon settings.
  *
  * @param settings The pointer to a structure containing key-value pairs

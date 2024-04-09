@@ -70,6 +70,14 @@
 #define PATH_DIR     "datastore.path.dir"
 #define FILENAME     "datastore.filename"
 
+#define LOG_KEY_MESSAGE "MESSAGE"
+
+// The log writer callback. Gets called on every message logging attempt.
+GLogWriterOutput log_writer(      GLogLevelFlags,
+                            const GLogField *,
+                                  gsize,
+                                  gpointer);
+
 // Retrieves the port number used to run the server, from daemon settings.
 unsigned short get_server_port(GKeyFile *);
 
