@@ -27,6 +27,9 @@
 int main(int argc, char *const *argv) {
     char *daemon_name = argv[0];
 
+    // Registering the log writer callback.
+    g_log_set_writer_func(log_writer, NULL, NULL);
+
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
 
