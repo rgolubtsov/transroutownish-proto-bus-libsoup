@@ -32,11 +32,24 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
                                   gsize           n_fields,
                                   gpointer        user_data) {
 
+    GFileOutputStream *log_stream = user_data;
+
     for (gsize i = 0; i < n_fields; i++) {
         if ((log_level == G_LOG_LEVEL_MESSAGE)
             && (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0)) {
 
-            fprintf(stderr, "%s" NEW_LINE, (char *) fields[i].value);
+            char *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
+
+            // Writing the log message to stderr.
+            fprintf(stderr, "%s", message);
+
+            // Writing the log message to a logfile.
+            gssize nbytes = g_output_stream_write((GOutputStream *) log_stream,
+                message, strlen(message), NULL, NULL);
+
+            g_free(message);
+
+            if (nbytes == -1) { return G_LOG_WRITER_UNHANDLED; }
         }
     }
 
