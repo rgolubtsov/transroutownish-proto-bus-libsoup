@@ -94,6 +94,7 @@ gchar *get_routes_datastore(GKeyFile *);
 
 // Helper protos.
 GKeyFile *_get_settings();
+void _cleanup(GFileOutputStream *, GFile *);
 
 #endif//BUSD_H
 
