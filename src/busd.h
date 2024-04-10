@@ -70,6 +70,9 @@
 #define PATH_DIR     "datastore.path.dir"
 #define FILENAME     "datastore.filename"
 
+#define LOG_DIR "./log/"
+#define LOGFILE "bus.log"
+
 #define LOG_KEY_MESSAGE "MESSAGE"
 
 // The log writer callback. Gets called on every message logging attempt.
