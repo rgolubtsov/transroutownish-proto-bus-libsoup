@@ -83,9 +83,7 @@ int main(int argc, char *const *argv) {
 
     g_free(datastore);
 
-    g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
-    g_object_unref(log_stream);
-    g_object_unref(logfile);
+    _cleanup(log_stream, logfile);
 
     printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
 }

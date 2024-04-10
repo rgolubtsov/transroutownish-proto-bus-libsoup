@@ -162,4 +162,11 @@ GKeyFile *_get_settings() {
     return settings;
 }
 
+// Helper function. Makes final pointers cleanups/unrefs, closes streams, etc.
+void _cleanup(GFileOutputStream *log_stream, GFile *logfile) {
+    g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
+    g_object_unref(log_stream);
+    g_object_unref(logfile);
+}
+
 // vim:set nu et ts=4 sw=4:
