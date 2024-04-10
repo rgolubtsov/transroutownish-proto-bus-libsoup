@@ -27,8 +27,18 @@
 int main(int argc, char *const *argv) {
     char *daemon_name = argv[0];
 
+    // Creating the log directory.
+    GFile *logdir = g_file_new_for_path(LOG_DIR);
+    g_file_make_directory(logdir, NULL, NULL); g_object_unref(logdir);
+
+    // Creating the logfile and associating
+    // a newly allocated output stream with it.
+    GFile *logfile = g_file_new_for_path(LOG_DIR LOGFILE);
+    GFileOutputStream *log_stream = g_file_append_to(logfile,
+        G_FILE_CREATE_NONE, NULL, NULL);
+
     // Registering the log writer callback.
-    g_log_set_writer_func(log_writer, NULL, NULL);
+    g_log_set_writer_func(log_writer, log_stream, NULL);
 
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
@@ -72,6 +82,10 @@ int main(int argc, char *const *argv) {
     printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
 
     g_free(datastore);
+
+    g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
+    g_object_unref(log_stream);
+    g_object_unref(logfile);
 
     printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
 }
