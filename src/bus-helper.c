@@ -35,13 +35,16 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
     GFileOutputStream *log_stream = user_data;
 
     for (gsize i = 0; i < n_fields; i++) {
-        if ((log_level == G_LOG_LEVEL_MESSAGE)
-            && (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0)) {
+        if (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0) {
+            FILE *stream = NULL;
+
+            if (log_level == G_LOG_LEVEL_WARNING) { stream = stderr; }
+            if (log_level == G_LOG_LEVEL_MESSAGE) { stream = stdout; }
 
             char *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
 
-            // Writing the log message to stderr.
-            fprintf(stderr, "%s", message);
+            // Writing the log message to an output stream.
+            fprintf(stream, "%s", message);
 
             // Writing the log message to a logfile.
             gssize nbytes = g_output_stream_write((GOutputStream *) log_stream,
