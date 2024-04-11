@@ -85,11 +85,13 @@ int main(int argc, char *const *argv) {
     g_object_unref(data);
 
     printf(MSG_SERVER_STARTED NEW_LINE,  server_port);
+    g_message(       MSG_SERVER_STARTED, server_port);
     syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
 
     g_free(datastore);
 
     printf(MSG_SERVER_STOPPED NEW_LINE);
+    g_message(       MSG_SERVER_STOPPED);
     syslog(LOG_INFO, MSG_SERVER_STOPPED);
 
     _cleanup(log_stream, logfile);
