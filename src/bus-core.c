@@ -72,7 +72,7 @@ int main(int argc, char *const *argv) {
     GFile *data = g_file_new_for_path(datastore);
 
     if (!g_file_query_exists(data, NULL)) {
-        g_message(ERR_DATASTORE_NOT_FOUND);
+        g_warning(ERR_DATASTORE_NOT_FOUND);
 
         g_object_unref(data);
         g_free(datastore);
@@ -84,13 +84,11 @@ int main(int argc, char *const *argv) {
 
     g_object_unref(data);
 
-    printf(MSG_SERVER_STARTED NEW_LINE,  server_port);
     g_message(       MSG_SERVER_STARTED, server_port);
     syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
 
     g_free(datastore);
 
-    printf(MSG_SERVER_STOPPED NEW_LINE);
     g_message(       MSG_SERVER_STOPPED);
     syslog(LOG_INFO, MSG_SERVER_STOPPED);
 
