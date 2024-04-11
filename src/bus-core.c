@@ -82,11 +82,22 @@ int main(int argc, char *const *argv) {
         exit(EXIT_FAILURE);
     }
 
-    g_object_unref(data);
+    GFileInputStream *routes = g_file_read(data, NULL, NULL);
+
+    gchar *routes_list = g_malloc(100000);
+
+    gssize nbytes = g_input_stream_read((GInputStream *) routes, routes_list,
+        100000, NULL, NULL);
+
+    printf("%s%lu" NEW_LINE, routes_list, nbytes);
+
+    g_free(routes_list);
 
     g_message(       MSG_SERVER_STARTED, server_port);
     syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
 
+    g_object_unref(routes);
+    g_object_unref(data);
     g_free(datastore);
 
     g_message(       MSG_SERVER_STOPPED);
