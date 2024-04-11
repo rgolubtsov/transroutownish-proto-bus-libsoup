@@ -74,6 +74,8 @@ int main(int argc, char *const *argv) {
         g_object_unref(data);
         g_free(datastore);
 
+        _cleanup(log_stream, logfile);
+
         exit(EXIT_FAILURE);
     }
 
