@@ -35,13 +35,16 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
     GFileOutputStream *log_stream = user_data;
 
     for (gsize i = 0; i < n_fields; i++) {
-        if ((log_level == G_LOG_LEVEL_MESSAGE)
-            && (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0)) {
+        if (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0) {
+            FILE *stream = NULL;
+
+            if (log_level == G_LOG_LEVEL_WARNING) { stream = stderr; }
+            if (log_level == G_LOG_LEVEL_MESSAGE) { stream = stdout; }
 
             char *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
 
-            // Writing the log message to stderr.
-            fprintf(stderr, "%s", message);
+            // Writing the log message to an output stream.
+            fprintf(stream, "%s", message);
 
             // Writing the log message to a logfile.
             gssize nbytes = g_output_stream_write((GOutputStream *) log_stream,
@@ -74,10 +77,10 @@ unsigned short get_server_port(GKeyFile *settings) {
         if ((server_port >= MIN_PORT) && (server_port <= MAX_PORT)) {
             return server_port;
         } else {
-            g_message(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
+            g_warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
         }
     } else {
-        g_message(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
+        g_warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
     }
 }
 
@@ -153,7 +156,7 @@ GKeyFile *_get_settings() {
             = g_error_matches(error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
 
         if (is_failed) {
-            g_message(ERR_SETTINGS_NOT_FOUND, error->message);
+            g_warning(ERR_SETTINGS_NOT_FOUND, error->message);
         }
 
         return NULL;
@@ -164,6 +167,9 @@ GKeyFile *_get_settings() {
 
 // Helper function. Makes final pointers cleanups/unrefs, closes streams, etc.
 void _cleanup(GFileOutputStream *log_stream, GFile *logfile) {
+    // Closing the system logger.
+    closelog();
+
     g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
     g_object_unref(log_stream);
     g_object_unref(logfile);
