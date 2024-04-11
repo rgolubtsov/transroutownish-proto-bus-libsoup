@@ -40,6 +40,9 @@ int main(int argc, char *const *argv) {
     // Registering the log writer callback.
     g_log_set_writer_func(log_writer, log_stream, NULL);
 
+    // Opening the system logger.
+    openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
+
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
 
@@ -81,13 +84,15 @@ int main(int argc, char *const *argv) {
 
     g_object_unref(data);
 
-    printf(MSG_SERVER_STARTED NEW_LINE, daemon_name, server_port);
+    printf(MSG_SERVER_STARTED NEW_LINE,  daemon_name, server_port);
+    syslog(LOG_INFO, MSG_SERVER_STARTED, daemon_name, server_port);
 
     g_free(datastore);
 
-    _cleanup(log_stream, logfile);
+    printf(MSG_SERVER_STOPPED NEW_LINE,  daemon_name);
+    syslog(LOG_INFO, MSG_SERVER_STOPPED, daemon_name);
 
-    printf(MSG_SERVER_STOPPED NEW_LINE, daemon_name);
+    _cleanup(log_stream, logfile);
 }
 
 // vim:set nu et ts=4 sw=4:

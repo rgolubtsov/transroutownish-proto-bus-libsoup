@@ -16,6 +16,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <syslog.h>
 
 #define G_LOG_USE_STRUCTURED // <== To use structured logging.
 

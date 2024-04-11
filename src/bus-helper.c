@@ -164,6 +164,9 @@ GKeyFile *_get_settings() {
 
 // Helper function. Makes final pointers cleanups/unrefs, closes streams, etc.
 void _cleanup(GFileOutputStream *log_stream, GFile *logfile) {
+    // Closing the system logger.
+    closelog();
+
     g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
     g_object_unref(log_stream);
     g_object_unref(logfile);
