@@ -25,7 +25,7 @@
  * @returns The exit code of the overall termination of the daemon.
  */
 int main(int argc, char *const *argv) {
-    char *daemon_name = argv[0];
+    char *daemon_name __attribute__ ((unused)) = argv[0];
 
     // Creating the log directory.
     GFile *logdir = g_file_new_for_path(LOG_DIR);
@@ -84,13 +84,13 @@ int main(int argc, char *const *argv) {
 
     g_object_unref(data);
 
-    printf(MSG_SERVER_STARTED NEW_LINE,  daemon_name, server_port);
-    syslog(LOG_INFO, MSG_SERVER_STARTED, daemon_name, server_port);
+    printf(MSG_SERVER_STARTED NEW_LINE,  server_port);
+    syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
 
     g_free(datastore);
 
-    printf(MSG_SERVER_STOPPED NEW_LINE,  daemon_name);
-    syslog(LOG_INFO, MSG_SERVER_STOPPED, daemon_name);
+    printf(MSG_SERVER_STOPPED NEW_LINE);
+    syslog(LOG_INFO, MSG_SERVER_STOPPED);
 
     _cleanup(log_stream, logfile);
 }

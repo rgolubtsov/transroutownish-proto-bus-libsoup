@@ -39,8 +39,8 @@
 #define ERR_DATASTORE_NOT_FOUND "FATAL: Data store file not found. Quitting..."
 
 // Common notification messages.
-#define MSG_SERVER_STARTED "%s: Server started on port %u"
-#define MSG_SERVER_STOPPED "%s: Server stopped"
+#define MSG_SERVER_STARTED "Server started on port %u"
+#define MSG_SERVER_STOPPED "Server stopped"
 
 /** The path and filename of the daemon settings. */
 #define SETTINGS "./etc/settings.conf"
