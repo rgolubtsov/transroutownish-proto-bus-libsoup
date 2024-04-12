@@ -84,21 +84,29 @@ int main(int argc, char *const *argv) {
 
     GFileInputStream *routes = g_file_read(data, NULL, NULL);
 
-    gchar *routes_list = g_malloc(100000);
+    // Querying for the size of the routes data store.
+    GFileInfo *data_info = g_file_query_info(data,
+        G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
 
-    gssize nbytes = g_input_stream_read((GInputStream *) routes, routes_list,
-        100000, NULL, NULL);
+    // Getting the size of the routes data store.
+    gssize data_size = g_file_info_get_size(data_info);
 
-    printf("%s%lu" NEW_LINE, routes_list, nbytes);
+    // Reading routes from the routes data store.
+    gchar *routes_list = g_malloc(data_size);
+    g_input_stream_read((GInputStream *) routes, routes_list, data_size,
+        NULL, NULL);
+
+    printf("%s" NEW_LINE, routes_list);
 
     g_free(routes_list);
-
-    g_message(       MSG_SERVER_STARTED, server_port);
-    syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
-
+    g_object_unref(data_info);
+    g_input_stream_close((GInputStream *) routes, NULL, NULL);
     g_object_unref(routes);
     g_object_unref(data);
     g_free(datastore);
+
+    g_message(       MSG_SERVER_STARTED, server_port);
+    syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
 
     g_message(       MSG_SERVER_STOPPED);
     syslog(LOG_INFO, MSG_SERVER_STOPPED);
