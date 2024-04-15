@@ -25,7 +25,7 @@
  * @returns The exit code of the overall termination of the daemon.
  */
 int main(int argc, char *const *argv) {
-    char *daemon_name __attribute__ ((unused)) = argv[0];
+    gchar *daemon_name __attribute__ ((unused)) = argv[0];
 
     // Creating the log directory.
     GFile *logdir = g_file_new_for_path(LOG_DIR);
@@ -92,13 +92,19 @@ int main(int argc, char *const *argv) {
     gssize data_size = g_file_info_get_size(data_info);
 
     // Reading routes from the routes data store.
-    gchar *routes_list = g_malloc(data_size);
-    g_input_stream_read((GInputStream *) routes, routes_list, data_size,
+    gchar *routes_buff = g_malloc(data_size);
+    g_input_stream_read((GInputStream *) routes, routes_buff, data_size,
         NULL, NULL);
 
-    printf("%s" NEW_LINE, routes_list);
+    gchar** routes_list = g_strsplit(routes_buff, NEW_LINE, 0);
+    guint routes_len = g_strv_length(routes_list);
 
-    g_free(routes_list);
+    for (guint i = 0; i < routes_len; i++) {
+        printf("%s" NEW_LINE, routes_list[i]);
+    }
+
+    g_strfreev(routes_list);
+    g_free(routes_buff);
     g_object_unref(data_info);
     g_input_stream_close((GInputStream *) routes, NULL, NULL);
     g_object_unref(routes);
