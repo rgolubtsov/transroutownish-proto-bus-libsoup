@@ -41,7 +41,7 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
             if (log_level == G_LOG_LEVEL_WARNING) { stream = stderr; }
             if (log_level == G_LOG_LEVEL_MESSAGE) { stream = stdout; }
 
-            char *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
+            gchar *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
 
             // Writing the log message to an output stream.
             fprintf(stream, "%s", message);

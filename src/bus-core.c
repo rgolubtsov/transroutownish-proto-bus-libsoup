@@ -25,7 +25,7 @@
  * @returns The exit code of the overall termination of the daemon.
  */
 int main(int argc, char *const *argv) {
-    char *daemon_name __attribute__ ((unused)) = argv[0];
+    gchar *daemon_name __attribute__ ((unused)) = argv[0];
 
     // Creating the log directory.
     GFile *logdir = g_file_new_for_path(LOG_DIR);
