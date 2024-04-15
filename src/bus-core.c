@@ -96,8 +96,6 @@ int main(int argc, char *const *argv) {
     g_input_stream_read((GInputStream *) routes, routes_buff, data_size,
         NULL, NULL);
 
-    printf("%s" NEW_LINE, routes_buff);
-
     gchar** routes_list = g_strsplit(routes_buff, NEW_LINE, 0);
     guint routes_len = g_strv_length(routes_list);
 
