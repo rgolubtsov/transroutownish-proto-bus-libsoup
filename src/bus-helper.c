@@ -67,10 +67,10 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
  *
  * @return The port number on which the server has to be run.
  */
-unsigned short get_server_port(GKeyFile *settings) {
+gushort get_server_port(GKeyFile *settings) {
     GError *error = NULL;
 
-    unsigned short server_port
+    gushort server_port
         = g_key_file_get_integer(settings, SERVER_GROUP, SERVER_PORT, &error);
 
     if (server_port != 0) {

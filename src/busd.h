@@ -83,7 +83,7 @@ GLogWriterOutput log_writer(      GLogLevelFlags,
                                   gpointer);
 
 // Retrieves the port number used to run the server, from daemon settings.
-unsigned short get_server_port(GKeyFile *);
+gushort get_server_port(GKeyFile *);
 
 // Identifies whether debug logging is enabled by retrieving
 // the corresponding setting from daemon settings.
