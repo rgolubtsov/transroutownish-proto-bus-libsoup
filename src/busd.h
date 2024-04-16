@@ -79,7 +79,8 @@
 #define LOG_LEVEL_WARN "WARN"
 #define LOG_LEVEL_INFO "INFO"
 
-#define LOG_FORMAT "[%u-%u-%u][%u:%u:%u][%s ]  %s"
+#define DTM_FORMAT "%02u"
+#define LOG_FORMAT "%s"
 
 // The log writer callback. Gets called on every message logging attempt.
 GLogWriterOutput log_writer(      GLogLevelFlags,
