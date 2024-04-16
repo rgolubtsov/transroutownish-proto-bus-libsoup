@@ -36,21 +36,51 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
 
     for (gsize i = 0; i < n_fields; i++) {
         if (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0) {
-            FILE *stream = NULL;
+            FILE  *stream = NULL;
+            gchar *llevel = NULL;
 
-            if (log_level == G_LOG_LEVEL_WARNING) { stream = stderr; }
-            if (log_level == G_LOG_LEVEL_MESSAGE) { stream = stdout; }
+            if (log_level == G_LOG_LEVEL_WARNING) {
+                stream = stderr;
+                llevel = LOG_LEVEL_WARN;
+            }
 
-            gchar *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
+            if (log_level == G_LOG_LEVEL_MESSAGE) {
+                stream = stdout;
+                llevel = LOG_LEVEL_INFO;
+            }
+
+GDateTime *date_time = g_date_time_new_now_local();
+gchar *year   = g_strdup_printf(DTM_FORMAT, g_date_time_get_year        (date_time));
+gchar *month  = g_strdup_printf(DTM_FORMAT, g_date_time_get_month       (date_time));
+gchar *day    = g_strdup_printf(DTM_FORMAT, g_date_time_get_day_of_month(date_time));
+gchar *hour   = g_strdup_printf(DTM_FORMAT, g_date_time_get_hour        (date_time));
+gchar *minute = g_strdup_printf(DTM_FORMAT, g_date_time_get_minute      (date_time));
+gchar *second = g_strdup_printf(DTM_FORMAT, g_date_time_get_second      (date_time));
+
+            gchar *message = g_strconcat("[", year,
+                                         "-", month,
+                                         "-", day,
+                                        "][", hour,
+                                         ":", minute,
+                                         ":", second,
+                                        "][", llevel,
+                                      " ]  ", fields[i].value, NEW_LINE, NULL);
 
             // Writing the log message to an output stream.
-            fprintf(stream, "%s", message);
+            fprintf(stream, LOG_FORMAT, message);
 
             // Writing the log message to a logfile.
             gssize nbytes = g_output_stream_write((GOutputStream *) log_stream,
                 message, strlen(message), NULL, NULL);
 
             g_free(message);
+
+            g_free(second);
+            g_free(minute);
+            g_free(hour  );
+            g_free(day   );
+            g_free(month );
+            g_free(year  );
 
             if (nbytes == -1) { return G_LOG_WRITER_UNHANDLED; }
         }
@@ -67,10 +97,10 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
  *
  * @return The port number on which the server has to be run.
  */
-unsigned short get_server_port(GKeyFile *settings) {
+gushort get_server_port(GKeyFile *settings) {
     GError *error = NULL;
 
-    unsigned short server_port
+    gushort server_port
         = g_key_file_get_integer(settings, SERVER_GROUP, SERVER_PORT, &error);
 
     if (server_port != 0) {

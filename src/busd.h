@@ -76,6 +76,12 @@
 
 #define LOG_KEY_MESSAGE "MESSAGE"
 
+#define LOG_LEVEL_WARN "WARN"
+#define LOG_LEVEL_INFO "INFO"
+
+#define DTM_FORMAT "%02u"
+#define LOG_FORMAT "%s"
+
 // The log writer callback. Gets called on every message logging attempt.
 GLogWriterOutput log_writer(      GLogLevelFlags,
                             const GLogField *,
@@ -83,7 +89,7 @@ GLogWriterOutput log_writer(      GLogLevelFlags,
                                   gpointer);
 
 // Retrieves the port number used to run the server, from daemon settings.
-unsigned short get_server_port(GKeyFile *);
+gushort get_server_port(GKeyFile *);
 
 // Identifies whether debug logging is enabled by retrieving
 // the corresponding setting from daemon settings.

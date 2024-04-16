@@ -46,7 +46,7 @@ int main(int argc, char *const *argv) {
     // Getting the daemon settings.
     GKeyFile *settings = _get_settings();
 
-    unsigned short server_port = DEF_PORT;
+    gushort server_port = DEF_PORT;
     gboolean debug_log_enabled __attribute__ ((unused)) = TRUE;
     gchar *datastore = EMPTY_STRING;
 
@@ -89,7 +89,7 @@ int main(int argc, char *const *argv) {
         G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
 
     // Getting the size of the routes data store.
-    gssize data_size = g_file_info_get_size(data_info);
+    goffset data_size = g_file_info_get_size(data_info);
 
     // Reading routes from the routes data store.
     gchar *routes_buff = g_malloc(data_size);
