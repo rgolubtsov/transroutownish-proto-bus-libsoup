@@ -36,15 +36,32 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
 
     for (gsize i = 0; i < n_fields; i++) {
         if (g_strcmp0(fields[i].key, LOG_KEY_MESSAGE) == 0) {
-            FILE *stream = NULL;
+            FILE  *stream = NULL;
+            gchar *llevel = NULL;
 
-            if (log_level == G_LOG_LEVEL_WARNING) { stream = stderr; }
-            if (log_level == G_LOG_LEVEL_MESSAGE) { stream = stdout; }
+            if (log_level == G_LOG_LEVEL_WARNING) {
+                stream = stderr;
+                llevel = LOG_LEVEL_WARN;
+            }
+
+            if (log_level == G_LOG_LEVEL_MESSAGE) {
+                stream = stdout;
+                llevel = LOG_LEVEL_INFO;
+            }
+
+            GDateTime *date_time = g_date_time_new_now_local();
+            gint year   = g_date_time_get_year        (date_time);
+            gint month  = g_date_time_get_month       (date_time);
+            gint day    = g_date_time_get_day_of_month(date_time);
+            gint hour   = g_date_time_get_hour        (date_time);
+            gint minute = g_date_time_get_minute      (date_time);
+            gint second = g_date_time_get_second      (date_time);
 
             gchar *message = g_strconcat(fields[i].value, NEW_LINE, NULL);
 
             // Writing the log message to an output stream.
-            fprintf(stream, "%s", message);
+            fprintf(stream, LOG_FORMAT,
+                year, month, day, hour, minute, second, llevel, message);
 
             // Writing the log message to a logfile.
             gssize nbytes = g_output_stream_write((GOutputStream *) log_stream,

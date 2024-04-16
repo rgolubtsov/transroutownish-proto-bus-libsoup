@@ -76,6 +76,11 @@
 
 #define LOG_KEY_MESSAGE "MESSAGE"
 
+#define LOG_LEVEL_WARN "WARN"
+#define LOG_LEVEL_INFO "INFO"
+
+#define LOG_FORMAT "[%u-%u-%u][%u:%u:%u][%s ]  %s"
+
 // The log writer callback. Gets called on every message logging attempt.
 GLogWriterOutput log_writer(      GLogLevelFlags,
                             const GLogField *,
