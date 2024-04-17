@@ -163,6 +163,13 @@ gchar *get_routes_datastore(GKeyFile *settings) {
         datastore = g_strconcat(datastore, path_dir,    NULL); }
     if (filename    != NULL) {
         datastore = g_strconcat(datastore, filename,    NULL); }
+    else {
+        g_free(datastore  );
+        g_free(path_dir   );
+        g_free(path_prefix);
+
+        return NULL;
+    }
 
     g_free(filename   );
     g_free(path_dir   );
