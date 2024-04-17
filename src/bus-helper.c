@@ -44,6 +44,11 @@ GLogWriterOutput log_writer(      GLogLevelFlags  log_level,
                 llevel = LOG_LEVEL_WARN;
             }
 
+            if (log_level == G_LOG_LEVEL_DEBUG) {
+                stream = stdout;
+                llevel = LOG_LEVEL_DEBUG;
+            }
+
             if (log_level == G_LOG_LEVEL_MESSAGE) {
                 stream = stdout;
                 llevel = LOG_LEVEL_INFO;
@@ -64,7 +69,9 @@ gchar *second = g_strdup_printf(DTM_FORMAT, g_date_time_get_second      (date_ti
                                          ":", minute,
                                          ":", second,
                                         "][", llevel,
-                                      " ]  ", fields[i].value, NEW_LINE, NULL);
+            (log_level == G_LOG_LEVEL_DEBUG)
+                   ? (      "]" SPACE SPACE)
+                   : (SPACE "]" SPACE SPACE), fields[i].value, NEW_LINE, NULL);
 
             // Writing the log message to an output stream.
             fprintf(stream, LOG_FORMAT, message);
