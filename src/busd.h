@@ -76,8 +76,9 @@
 
 #define LOG_KEY_MESSAGE "MESSAGE"
 
-#define LOG_LEVEL_WARN "WARN"
-#define LOG_LEVEL_INFO "INFO"
+#define LOG_LEVEL_WARN  "WARN"
+#define LOG_LEVEL_DEBUG "DEBUG"
+#define LOG_LEVEL_INFO  "INFO"
 
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
