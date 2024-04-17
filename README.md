@@ -40,6 +40,8 @@ One may consider this project has to be suitable for a wide variety of applied a
 
 * **[Building](#building)**
 * **[Running](#running)**
+* **[Consuming](#consuming)**
+  * **[Logging](#logging)**
 
 ## Building
 
@@ -72,6 +74,32 @@ tcc `pkg-config   --libs-only-l glib-2.0 gio-unix-2.0` -o bin/busd src/bus-core.
 ```
 $ ./bin/busd; echo $?
 ...
+```
+
+## Consuming
+
+All the routes are contained in a so-called **routes data store**. It is located in the `data/` directory. The default filename for it is `routes.txt`, but it can be specified explicitly (if intended to use another one) in the `etc/settings.conf` configuration file.
+
+### Logging
+
+The microservice has the ability to log messages to a logfile and to the Unix syslog facility. When running under Ubuntu Server (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/bus.log` logfile:
+
+```
+$ tail -f log/bus.log
+...
+[2024-04-18][01:40:30][DEBUG]  1 1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+...
+[2024-04-18][01:40:30][INFO ]  Server started on port 8765
+[2024-04-18][01:40:30][INFO ]  Server stopped
+```
+
+Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
+
+```
+$ journalctl -f
+...
+Apr 18 01:40:30 <hostname> busd[<pid>]: Server started on port 8765
+Apr 18 01:40:30 <hostname> busd[<pid>]: Server stopped
 ```
 
 **TBD** :dvd:
