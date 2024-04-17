@@ -100,7 +100,7 @@ int main(int argc, char *const *argv) {
     guint routes_len = g_strv_length(routes_list);
 
     for (guint i = 0; i < routes_len; i++) {
-        printf("%s" NEW_LINE, routes_list[i]);
+        g_debug(LOG_FORMAT, routes_list[i]);
     }
 
     g_strfreev(routes_list);
