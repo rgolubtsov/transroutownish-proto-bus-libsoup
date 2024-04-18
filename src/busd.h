@@ -83,6 +83,13 @@
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
 
+/**
+ * The regex pattern for the element to be excluded from a bus stops sequence:
+ * it is an arbitrary identifier of a route, which is not used
+ * in the routes processing anyhow.
+ */
+#define ROUTE_ID_REGEX "^\\d+"
+
 // The log writer callback. Gets called on every message logging attempt.
 GLogWriterOutput log_writer(      GLogLevelFlags,
                             const GLogField *,
