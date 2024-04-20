@@ -96,13 +96,34 @@ int main(int argc, char *const *argv) {
     g_input_stream_read((GInputStream *) routes, routes_buff, data_size,
         NULL, NULL);
 
-    gchar** routes_list = g_strsplit(routes_buff, NEW_LINE, 0);
-    guint routes_len = g_strv_length(routes_list);
+    gchar **routes_list = g_strsplit(routes_buff, NEW_LINE, 0);
+    guint routes_len = g_strv_length(routes_list) - 1;
+
+//  for (guint i = 0; i < routes_len; i++) {
+//      g_debug(LOG_FORMAT, routes_list[i]);
+//  }
+
+    // |Like|  routes_list =   new ArrayList();
+    GPtrArray *routes_gary = g_ptr_array_new();
+
+    GRegex *route_id_regex = g_regex_new(ROUTE_ID_REGEX, 0, 0, NULL);
 
     for (guint i = 0; i < routes_len; i++) {
-        g_debug(LOG_FORMAT, routes_list[i]);
+        gchar *route_ = g_strconcat(routes_list[i], SPACE, NULL);
+        gchar *route  = g_regex_replace(route_id_regex, route_, -1, 0,
+            EMPTY_STRING, 0, NULL);
+
+        g_ptr_array_add(routes_gary, route);
+
+        g_debug("%u" SPACE EQUALS SPACE LOG_FORMAT, (i + 1),
+            (gchar *) g_ptr_array_index(routes_gary, i));
+
+        g_free(route );
+        g_free(route_);
     }
 
+    g_regex_unref(route_id_regex);
+    g_ptr_array_unref(routes_gary);
     g_strfreev(routes_list);
     g_free(routes_buff);
     g_object_unref(data_info);
