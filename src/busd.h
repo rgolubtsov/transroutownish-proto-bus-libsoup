@@ -1,7 +1,7 @@
 /*
  * src/busd.h
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.0.1
+ * Urban bus routing microservice prototype (C port). Version 0.0.2
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
