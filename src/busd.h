@@ -107,6 +107,9 @@ gboolean is_debug_log_enabled(GKeyFile *);
 // from daemon settings.
 gchar *get_routes_datastore(GKeyFile *);
 
+// Starts up the Soup web server and the main loop.
+int startup(const gushort, const gboolean, const GPtrArray *);
+
 // Helper protos.
 GKeyFile *_get_settings();
 void _cleanup(GFileOutputStream *, GFile *);

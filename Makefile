@@ -17,6 +17,7 @@ SRC_DIR = src
 PREF = bus
 EXEC = $(BIN_DIR)/$(PREF)d
 DEPS = $(SRC_DIR)/$(PREF)-core.o \
+       $(SRC_DIR)/$(PREF)-controller.o \
        $(SRC_DIR)/$(PREF)-helper.o
 
 # Specify flags and other vars here.

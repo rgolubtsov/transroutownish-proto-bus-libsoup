@@ -47,7 +47,7 @@ int main(int argc, char *const *argv) {
     GKeyFile *settings = _get_settings();
 
     gushort server_port = DEF_PORT;
-    gboolean debug_log_enabled __attribute__ ((unused)) = TRUE;
+    gboolean debug_log_enabled = TRUE;
     gchar *datastore = EMPTY_STRING;
 
     if (settings != NULL) {
@@ -121,6 +121,9 @@ int main(int argc, char *const *argv) {
         g_free(route );
         g_free(route_);
     }
+
+    // Starting up the Soup web server and the main loop.
+    startup(server_port, debug_log_enabled, routes_gary);
 
     g_regex_unref(route_id_regex);
     g_ptr_array_unref(routes_gary);
