@@ -14,14 +14,12 @@
 #ifndef BUSD_H
 #define BUSD_H
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <syslog.h>
 
 #define G_LOG_USE_STRUCTURED // <== To use structured logging.
 
-#include <glib.h>
-#include <gio/gio.h>
+#include <libsoup/soup.h>
 
 // Helper constants.
 #define EMPTY_STRING ""
@@ -83,6 +81,8 @@
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
 
+#define LIBSOUP "libsoup"
+
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:
  * it is an arbitrary identifier of a route, which is not used
@@ -108,7 +108,7 @@ gboolean is_debug_log_enabled(GKeyFile *);
 gchar *get_routes_datastore(GKeyFile *);
 
 // Starts up the Soup web server and the main loop.
-int startup(const gushort, const gboolean, const GPtrArray *);
+SoupServer *startup(const gushort, const gboolean, const GPtrArray *);
 
 // Helper protos.
 GKeyFile *_get_settings();
