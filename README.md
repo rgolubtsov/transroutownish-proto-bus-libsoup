@@ -56,15 +56,16 @@ $ sudo apt-get update && \
 
 ```
 $ make clean
-rm -f -vR bin src/bus-core.o src/bus-helper.o
+rm -f -vR bin src/bus-core.o src/bus-controller.o src/bus-helper.o
 $
 $ make all  # <== Building the daemon.
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I glib-2.0` src/bus-core.c -o src/bus-core.o
-cc -Wall -pedantic -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I glib-2.0` src/bus-helper.c -o src/bus-helper.o
+cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0` src/bus-core.c -o src/bus-core.o
+cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0` src/bus-controller.c -o src/bus-controller.o
+cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0` src/bus-helper.c -o src/bus-helper.o
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-tcc `pkg-config   --libs-only-l glib-2.0 gio-unix-2.0` -o bin/busd src/bus-core.o src/bus-helper.o
+tcc `pkg-config   --libs-only-l libsoup-3.0` -o bin/busd src/bus-core.o src/bus-controller.o src/bus-helper.o
 ```
 
 ## Running
