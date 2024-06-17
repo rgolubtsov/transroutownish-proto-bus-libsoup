@@ -23,13 +23,18 @@
  * @param routes_list       The pointer to an array containing
  *                          all available routes.
  *
- * @returns The exit code of the overall termination of the daemon.
+ * @returns A new <code>SoupServer</code> server instance.
  */
-int startup(const gushort    server_port,
-            const gboolean   debug_log_enabled,
-            const GPtrArray *routes_list) {
+SoupServer *startup(const gushort    server_port,
+                    const gboolean   debug_log_enabled,
+                    const GPtrArray *routes_list) {
 
-    return EXIT_SUCCESS;
+    SoupServer *server = soup_server_new("server-header", LIBSOUP SPACE, NULL);
+
+    g_message(       MSG_SERVER_STARTED, server_port);
+    syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
+
+    return server;
 }
 
 // vim:set nu et ts=4 sw=4:
