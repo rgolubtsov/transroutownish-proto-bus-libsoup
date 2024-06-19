@@ -77,7 +77,7 @@ int main(int argc, char *const *argv) {
         g_object_unref(data);
         g_free(datastore);
 
-        _cleanup(log_stream, logfile);
+        _cleanup(log_stream, logfile, NULL);
 
         exit(EXIT_FAILURE);
     }
@@ -123,8 +123,7 @@ int main(int argc, char *const *argv) {
     }
 
     // Starting up the Soup web server and the main loop.
-    SoupServer *server __attribute__ ((unused)) = startup(server_port,
-        debug_log_enabled, routes_gary);
+    GMainLoop *loop = startup(server_port, debug_log_enabled, routes_gary);
 
     g_regex_unref(route_id_regex);
     g_ptr_array_unref(routes_gary);
@@ -139,7 +138,7 @@ int main(int argc, char *const *argv) {
     g_message(       MSG_SERVER_STOPPED);
     syslog(LOG_INFO, MSG_SERVER_STOPPED);
 
-    _cleanup(log_stream, logfile);
+    _cleanup(log_stream, logfile, loop);
 }
 
 // vim:set nu et ts=4 sw=4:

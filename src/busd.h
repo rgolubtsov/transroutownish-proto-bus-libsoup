@@ -81,7 +81,7 @@
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
 
-#define LIBSOUP "libsoup"
+#define SERVER_HEADER "server-header"
 
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:
@@ -108,11 +108,11 @@ gboolean is_debug_log_enabled(GKeyFile *);
 gchar *get_routes_datastore(GKeyFile *);
 
 // Starts up the Soup web server and the main loop.
-SoupServer *startup(const gushort, const gboolean, const GPtrArray *);
+GMainLoop *startup(const gushort, const gboolean, const GPtrArray *);
 
 // Helper protos.
 GKeyFile *_get_settings();
-void _cleanup(GFileOutputStream *, GFile *);
+void _cleanup(GFileOutputStream *, GFile *, GMainLoop *);
 
 #endif//BUSD_H
 
