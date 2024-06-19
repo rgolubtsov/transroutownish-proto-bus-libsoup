@@ -1,7 +1,7 @@
 /*
  * src/bus-helper.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.0.2
+ * Urban bus routing microservice prototype (C port). Version 0.0.3
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -210,13 +210,15 @@ GKeyFile *_get_settings() {
 }
 
 // Helper function. Makes final pointers cleanups/unrefs, closes streams, etc.
-void _cleanup(GFileOutputStream *log_stream, GFile *logfile) {
+void _cleanup(GFileOutputStream *log_stream, GFile *logfile, GMainLoop *loop) {
     // Closing the system logger.
     closelog();
 
     g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
     g_object_unref(log_stream);
     g_object_unref(logfile);
+
+    g_main_loop_quit(loop);
 }
 
 // vim:set nu et ts=4 sw=4:

@@ -1,7 +1,7 @@
 /*
  * src/bus-controller.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.0.2
+ * Urban bus routing microservice prototype (C port). Version 0.0.3
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -23,18 +23,32 @@
  * @param routes_list       The pointer to an array containing
  *                          all available routes.
  *
- * @returns A new <code>SoupServer</code> server instance.
+ * @returns A new <code>GMainLoop</code> main loop instance.
  */
-SoupServer *startup(const gushort    server_port,
-                    const gboolean   debug_log_enabled,
-                    const GPtrArray *routes_list) {
+GMainLoop *startup(const gushort    server_port,
+                   const gboolean   debug_log_enabled,
+                   const GPtrArray *routes_list) {
 
-    SoupServer *server = soup_server_new("server-header", LIBSOUP SPACE, NULL);
+    // Creating the Soup web server and the main loop.
+    SoupServer *server = soup_server_new(SERVER_HEADER, EMPTY_STRING, NULL);
+    GMainLoop  *loop   = g_main_loop_new(NULL, FALSE);
 
-    g_message(       MSG_SERVER_STARTED, server_port);
-    syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
+    GError *error = NULL;
 
-    return server;
+    // Setting up the daemon to listen on all TCP IPv4 and IPv6 interfaces.
+    if (soup_server_listen_all(server, server_port,
+        (SoupServerListenOptions) NULL, &error)) {
+
+        g_message(       MSG_SERVER_STARTED, server_port);
+        syslog(LOG_INFO, MSG_SERVER_STARTED, server_port);
+
+        // Starting up the daemon by running the main loop.
+        g_main_loop_run(loop);
+    } else {
+        g_clear_error(&error);
+    }
+
+    return loop;
 }
 
 // vim:set nu et ts=4 sw=4:

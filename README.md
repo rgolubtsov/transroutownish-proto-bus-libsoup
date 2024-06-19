@@ -45,11 +45,21 @@ One may consider this project has to be suitable for a wide variety of applied a
 
 ## Building
 
-The microservice is known to be built and run successfully under **Ubuntu Server (Ubuntu 22.04.4 LTS x86-64)**. Install the necessary dependencies (`build-essential`, `tcc`, `libsoup-3.0-dev`, `docker.io`):
+The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 22.04.4 LTS x86-64)** and **Arch Linux**. Install the necessary dependencies (`build-essential`, `tcc`, `libsoup-3.0-dev`, `docker.io`):
+
+* In Ubuntu Server:
 
 ```
 $ sudo apt-get update && \
   sudo apt-get install build-essential tcc libsoup-3.0-dev docker.io -y
+...
+```
+
+* In Arch Linux:
+
+```
+$ sudo pacman -Syu base-devel tcc libsoup3 docker
+...
 ```
 
 **Build** the microservice using **GNU Make**:
@@ -83,7 +93,7 @@ All the routes are contained in a so-called **routes data store**. It is located
 
 ### Logging
 
-The microservice has the ability to log messages to a logfile and to the Unix syslog facility. When running under Ubuntu Server (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/bus.log` logfile:
+The microservice has the ability to log messages to a logfile and to the Unix syslog facility. When running under Ubuntu Server or Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/bus.log` logfile:
 
 ```
 $ tail -f log/bus.log
