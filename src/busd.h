@@ -20,6 +20,7 @@
 #define G_LOG_USE_STRUCTURED // <== To use structured logging.
 
 #include <libsoup/soup.h>
+#include <glib-unix.h>
 
 // Helper constants.
 #define EMPTY_STRING ""
@@ -107,12 +108,22 @@ gboolean is_debug_log_enabled(GKeyFile *);
 // from daemon settings.
 gchar *get_routes_datastore(GKeyFile *);
 
+// Helper structure to hold args for the `_cleanup()` helper function.
+typedef struct {
+    GFileOutputStream *log_stream;
+    GFile             *logfile;
+    GMainLoop         *loop;
+} _CLEANUP_ARGS;
+
 // Starts up the Soup web server and the main loop.
-GMainLoop *startup(const gushort, const gboolean, const GPtrArray *);
+GMainLoop *startup(const gushort,
+                   const gboolean,
+                   const GPtrArray *,
+                         _CLEANUP_ARGS *);
 
 // Helper protos.
 GKeyFile *_get_settings();
-void _cleanup(GFileOutputStream *, GFile *, GMainLoop *);
+void _cleanup(_CLEANUP_ARGS *);
 
 #endif//BUSD_H
 
