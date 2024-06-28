@@ -22,16 +22,21 @@
  * @param debug_log_enabled The debug logging enabler.
  * @param routes_list       The pointer to an array containing
  *                          all available routes.
+ * @param cleanup_args      The pointer to a structure that holds arguments
+ *                          for the <code>_cleanup()</code> helper function.
  *
  * @returns A new <code>GMainLoop</code> main loop instance.
  */
-GMainLoop *startup(const gushort    server_port,
-                   const gboolean   debug_log_enabled,
-                   const GPtrArray *routes_list) {
+GMainLoop *startup(const gushort        server_port,
+                   const gboolean       debug_log_enabled,
+                   const GPtrArray     *routes_list,
+                         _CLEANUP_ARGS *cleanup_args) {
 
     // Creating the Soup web server and the main loop.
     SoupServer *server = soup_server_new(SERVER_HEADER, EMPTY_STRING, NULL);
     GMainLoop  *loop   = g_main_loop_new(NULL, FALSE);
+
+    g_unix_signal_add(SIGINT, (GSourceFunc) _cleanup, cleanup_args);
 
     GError *error = NULL;
 
