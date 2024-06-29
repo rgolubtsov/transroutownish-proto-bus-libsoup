@@ -210,15 +210,16 @@ GKeyFile *_get_settings() {
 }
 
 // Helper function. Makes final pointers cleanups/unrefs, closes streams, etc.
-void _cleanup(GFileOutputStream *log_stream, GFile *logfile, GMainLoop *loop) {
+void _cleanup(_CLEANUP_ARGS *cleanup_args) {
     // Closing the system logger.
     closelog();
 
-    g_output_stream_close((GOutputStream *) log_stream, NULL, NULL);
-    g_object_unref(log_stream);
-    g_object_unref(logfile);
+    g_output_stream_close((GOutputStream *)
+                   cleanup_args->log_stream, NULL, NULL);
+    g_object_unref(cleanup_args->log_stream);
+    g_object_unref(cleanup_args->logfile);
 
-    g_main_loop_quit(loop);
+    g_main_loop_quit(cleanup_args->loop);
 }
 
 // vim:set nu et ts=4 sw=4:
