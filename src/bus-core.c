@@ -129,8 +129,8 @@ int main(int argc, char *const *argv) {
     }
 
     // Starting up the Soup web server and the main loop.
-    GMainLoop *loop = startup(server_port, debug_log_enabled, routes_gary,
-        _cleanup_args);
+    GMainLoop *loop __attribute__ ((unused)) = startup(server_port,
+        debug_log_enabled, routes_gary, _cleanup_args);
 
     g_regex_unref(route_id_regex);
     g_ptr_array_unref(routes_gary);
@@ -145,8 +145,6 @@ int main(int argc, char *const *argv) {
     g_message(       MSG_SERVER_STOPPED);
     syslog(LOG_INFO, MSG_SERVER_STOPPED);
 
-    _cleanup_args->loop = loop;
-    _cleanup(_cleanup_args);
     free(_cleanup_args);
 }
 

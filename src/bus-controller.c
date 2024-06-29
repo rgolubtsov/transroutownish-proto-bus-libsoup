@@ -36,6 +36,8 @@ GMainLoop *startup(const gushort        server_port,
     SoupServer *server = soup_server_new(SERVER_HEADER, EMPTY_STRING, NULL);
     GMainLoop  *loop   = g_main_loop_new(NULL, FALSE);
 
+    cleanup_args->loop = loop;
+
     g_unix_signal_add(SIGINT, (GSourceFunc) _cleanup, cleanup_args);
 
     GError *error = NULL;
