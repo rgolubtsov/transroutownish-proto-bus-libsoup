@@ -20,7 +20,7 @@
 #define G_LOG_USE_STRUCTURED // <== To use structured logging.
 
 #include <libsoup/soup.h>
-#include <glib-unix.h>
+#include <glib-unix.h> // <== Needs this for importing `g_unix_signal_add()`.
 
 // Helper constants.
 #define EMPTY_STRING ""
