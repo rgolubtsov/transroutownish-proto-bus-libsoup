@@ -29,6 +29,9 @@ void request_handler(      SoupServer        *server,
                            SoupServerMessage *msg,
                      const char              *path,
                            GHashTable        *query,
-                           gpointer           payload) {}
+                           gpointer           payload) {
+
+    soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
+}
 
 // vim:set nu et ts=4 sw=4:
