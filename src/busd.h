@@ -121,6 +121,13 @@ GMainLoop *startup(const gushort,
                    const GPtrArray *,
                          _CLEANUP_ARGS *);
 
+// The default request handler callback. Used to process the incoming request.
+void request_handler(      SoupServer *,
+                           SoupServerMessage *,
+                     const char *,
+                           GHashTable *,
+                           gpointer);
+
 // Helper protos.
 GKeyFile *_get_settings();
 void _cleanup(_CLEANUP_ARGS *);
