@@ -38,7 +38,9 @@ GMainLoop *startup(const gushort        server_port,
 
     cleanup_args->loop = loop;
 
-    g_unix_signal_add(SIGINT, (GSourceFunc) _cleanup, cleanup_args);
+    // Attaching Unix signal handlers to ensure daemon clean shutdown.
+    g_unix_signal_add(SIGINT,  (GSourceFunc) _cleanup, cleanup_args);
+    g_unix_signal_add(SIGTERM, (GSourceFunc) _cleanup, cleanup_args);
 
     GError *error = NULL;
 
