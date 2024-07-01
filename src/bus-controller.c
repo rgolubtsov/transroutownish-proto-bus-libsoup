@@ -42,6 +42,9 @@ GMainLoop *startup(const gushort        server_port,
     g_unix_signal_add(SIGINT,  (GSourceFunc) _cleanup, cleanup_args);
     g_unix_signal_add(SIGTERM, (GSourceFunc) _cleanup, cleanup_args);
 
+    // Attaching HTTP request handlers to process incoming requests.
+    soup_server_add_handler(server, NULL, request_handler, NULL, NULL);
+
     GError *error = NULL;
 
     // Setting up the daemon to listen on all TCP IPv4 and IPv6 interfaces.
