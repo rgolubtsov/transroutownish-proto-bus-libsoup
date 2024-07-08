@@ -36,6 +36,8 @@
     "The default value of 8080 will be used instead."
 #define ERR_SETTINGS_NOT_FOUND "Daemon settings file not found: %s"
 #define ERR_DATASTORE_NOT_FOUND "FATAL: Data store file not found. Quitting..."
+#define ERR_CANNOT_START_SERVER "FATAL: Cannot start server "
+#define ERR_SERV_UNKNOWN_REASON "for an unknown reason. Quitting..."
 
 // Common notification messages.
 #define MSG_SERVER_STARTED "Server started on port %u"
