@@ -36,7 +36,9 @@ GMainLoop *startup(const gushort        server_port,
     SoupServer *server = soup_server_new(SERVER_HEADER, EMPTY_STRING, NULL);
     GMainLoop  *loop   = g_main_loop_new(NULL, FALSE);
 
-    if ((server == NULL) || (loop == NULL)) {
+    cleanup_args->loop = loop;
+
+    if (server == NULL) {
         g_warning(ERR_CANNOT_START_SERVER ERR_SERV_UNKNOWN_REASON);
 
         _cleanup(cleanup_args);
@@ -44,8 +46,6 @@ GMainLoop *startup(const gushort        server_port,
 
         exit(EXIT_FAILURE);
     }
-
-    cleanup_args->loop = loop;
 
     // Attaching Unix signal handlers to ensure daemon clean shutdown.
     g_unix_signal_add(SIGINT,  (GSourceFunc) _cleanup, cleanup_args);
