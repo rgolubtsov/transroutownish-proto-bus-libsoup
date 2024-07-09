@@ -38,6 +38,15 @@ GMainLoop *startup(const gushort        server_port,
 
     cleanup_args->loop = loop;
 
+    if (server == NULL) {
+        g_warning(ERR_CANNOT_START_SERVER ERR_SERV_UNKNOWN_REASON);
+
+        _cleanup(cleanup_args);
+        free(cleanup_args);
+
+        exit(EXIT_FAILURE);
+    }
+
     // Attaching Unix signal handlers to ensure daemon clean shutdown.
     g_unix_signal_add(SIGINT,  (GSourceFunc) _cleanup, cleanup_args);
     g_unix_signal_add(SIGTERM, (GSourceFunc) _cleanup, cleanup_args);
@@ -57,7 +66,16 @@ GMainLoop *startup(const gushort        server_port,
         // Starting up the daemon by running the main loop.
         g_main_loop_run(loop);
     } else {
+        if (error->code == ERR_EADDRINUSE_CODE) {
+            g_warning(ERR_CANNOT_START_SERVER ERR_ADDR_ALREADY_IN_USE);
+        }
+
         g_clear_error(&error);
+
+        _cleanup(cleanup_args);
+        free(cleanup_args);
+
+        exit(EXIT_FAILURE);
     }
 
     return loop;
