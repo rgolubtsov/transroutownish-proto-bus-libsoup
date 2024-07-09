@@ -211,6 +211,9 @@ GKeyFile *_get_settings() {
 
 // Helper function. Makes final pointers cleanups/unrefs, closes streams, etc.
 void _cleanup(_CLEANUP_ARGS *cleanup_args) {
+    g_message(       MSG_SERVER_STOPPED);
+    syslog(LOG_INFO, MSG_SERVER_STOPPED);
+
     // Closing the system logger.
     closelog();
 

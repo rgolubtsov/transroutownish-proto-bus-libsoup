@@ -71,6 +71,11 @@ GMainLoop *startup(const gushort        server_port,
         }
 
         g_clear_error(&error);
+
+        _cleanup(cleanup_args);
+        free(cleanup_args);
+
+        exit(EXIT_FAILURE);
     }
 
     return loop;
