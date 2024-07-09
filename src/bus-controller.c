@@ -66,6 +66,10 @@ GMainLoop *startup(const gushort        server_port,
         // Starting up the daemon by running the main loop.
         g_main_loop_run(loop);
     } else {
+        if (g_error_matches(error,ERR_EADDRINUSE_DOMAIN,ERR_EADDRINUSE_CODE)) {
+            g_warning(ERR_CANNOT_START_SERVER ERR_ADDR_ALREADY_IN_USE);
+        }
+
         g_clear_error(&error);
     }
 

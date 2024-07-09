@@ -38,6 +38,10 @@
 #define ERR_DATASTORE_NOT_FOUND "FATAL: Data store file not found. Quitting..."
 #define ERR_CANNOT_START_SERVER "FATAL: Cannot start server "
 #define ERR_SERV_UNKNOWN_REASON "for an unknown reason. Quitting..."
+#define ERR_ADDR_ALREADY_IN_USE "due to address requested already in use. " \
+    "Quitting..."
+#define ERR_EADDRINUSE_DOMAIN 104
+#define ERR_EADDRINUSE_CODE    33
 
 // Common notification messages.
 #define MSG_SERVER_STARTED "Server started on port %u"
