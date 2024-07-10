@@ -1,7 +1,7 @@
 /*
  * src/bus-core.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.0.5
+ * Urban bus routing microservice prototype (C port). Version 0.1.0
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
