@@ -42,6 +42,7 @@ One may consider this project has to be suitable for a wide variety of applied a
 * **[Running](#running)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
+  * **[Error handling](#error-handling)**
 
 ## Building
 
@@ -136,5 +137,11 @@ $ journalctl -f
 Apr 18 01:40:30 <hostname> busd[<pid>]: Server started on port 8765
 Apr 18 01:40:30 <hostname> busd[<pid>]: Server stopped
 ```
+
+**TBD** :cd:
+
+### Error handling
+
+When the query string passed in a request, contains inappropriate input, or the URI endpoint doesn't contain anything else at all after its path, the microservice will respond with the **HTTP 400 Bad Request** status code, including a specific response body in JSON representation, like the following:
 
 **TBD** :dvd:
