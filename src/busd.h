@@ -1,7 +1,7 @@
 /*
  * src/busd.h
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.1.0
+ * Urban bus routing microservice prototype (C port). Version 0.1.1
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -88,6 +88,14 @@
 #define LOG_FORMAT "%s"
 
 #define SERVER_HEADER "server-header"
+
+// Allowed HTTP methods.
+#define HTTP_HEAD "HEAD"
+#define HTTP_GET  "GET"
+
+// REST URI path-related constants.
+#define REST_PREFIX "route"
+#define REST_DIRECT "direct"
 
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:
