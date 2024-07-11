@@ -31,6 +31,27 @@ void request_handler(      SoupServer        *server,
                            GHashTable        *query,
                            gpointer           payload) {
 
+    const char *method = soup_server_message_get_method(msg);
+
+    g_debug("[%s][%s]", method, path);
+
+    if ((g_strcmp0(   method, HTTP_HEAD) != 0)
+        && (g_strcmp0(method, HTTP_GET ) != 0)) {
+
+        soup_server_message_set_status(msg,
+            SOUP_STATUS_METHOD_NOT_ALLOWED, NULL);
+
+        return;
+    }
+
+    if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
+        g_debug("[%s]", path);
+
+        soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
+
+        return;
+    }
+
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
 }
 

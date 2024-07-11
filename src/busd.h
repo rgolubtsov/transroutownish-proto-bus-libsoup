@@ -89,6 +89,14 @@
 
 #define SERVER_HEADER "server-header"
 
+// Allowed HTTP methods.
+#define HTTP_HEAD "HEAD"
+#define HTTP_GET  "GET"
+
+// REST URI path-related constants.
+#define REST_PREFIX "route"
+#define REST_DIRECT "direct"
+
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:
  * it is an arbitrary identifier of a route, which is not used
