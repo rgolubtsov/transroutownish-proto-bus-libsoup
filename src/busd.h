@@ -1,7 +1,7 @@
 /*
  * src/busd.h
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.1.1
+ * Urban bus routing microservice prototype (C port). Version 0.1.2
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -21,6 +21,7 @@
 
 #include <libsoup/soup.h>
 #include <glib-unix.h> // <== Needs this for importing `g_unix_signal_add()`.
+#include <json-glib/json-glib.h>
 
 // Helper constants.
 #define EMPTY_STRING ""
@@ -96,6 +97,11 @@
 // REST URI path-related constants.
 #define REST_PREFIX "route"
 #define REST_DIRECT "direct"
+
+// HTTP response-related constants.
+#define MIME_TYPE                "application/json"
+#define ERROR_JSON_KEY           "error"
+#define ERROR_JSON_VAL_NOT_FOUND "404 Not Found."
 
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:

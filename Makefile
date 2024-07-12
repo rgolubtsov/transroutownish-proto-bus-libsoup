@@ -1,7 +1,7 @@
 #
 # Makefile
 # =============================================================================
-# Urban bus routing microservice prototype (C port). Version 0.1.1
+# Urban bus routing microservice prototype (C port). Version 0.1.2
 # =============================================================================
 # A daemon written in C (GNOME/libsoup), designed and intended to be run
 # as a microservice, implementing a simple urban bus routing prototype.
@@ -28,8 +28,8 @@ CFLAGS = -Wall -std=$(CSTD) -march=x86-64 -O3 -pipe -c
 MKDIR   = mkdir
 RMFLAGS = -vR
 
-CFLAGS += `pkg-config --cflags-only-I libsoup-3.0`
-LDLIBS  = `pkg-config   --libs-only-l libsoup-3.0`
+CFLAGS += `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0`
+LDLIBS  = `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0`
 
 LDFLAGS = -o $(EXEC)
 

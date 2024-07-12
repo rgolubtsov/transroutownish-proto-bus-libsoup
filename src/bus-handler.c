@@ -1,7 +1,7 @@
 /*
  * src/bus-handler.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.1.1
+ * Urban bus routing microservice prototype (C port). Version 0.1.2
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -41,13 +41,33 @@ void request_handler(      SoupServer        *server,
         soup_server_message_set_status(msg,
             SOUP_STATUS_METHOD_NOT_ALLOWED, NULL);
 
+        // TODO: Set response header: "allow: GET, HEAD".
+
         return;
     }
 
     if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
         g_debug("[%s]", path);
 
-        soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
+        soup_server_message_set_status(msg, SOUP_STATUS_NOT_FOUND, NULL);
+
+        JsonObject    *json_object = json_object_new();
+        JsonNode      *json_node   = json_node_new(JSON_NODE_OBJECT);
+        JsonGenerator *json_gen    = json_generator_new();
+        GString       *json_body   = g_string_new(NULL);
+
+        json_object_set_string_member(json_object, ERROR_JSON_KEY,
+            ERROR_JSON_VAL_NOT_FOUND);
+        json_node = json_node_init_object(json_node, json_object);
+        json_generator_set_root(json_gen, json_node);
+        json_body = json_generator_to_gstring(json_gen, json_body);
+
+        soup_server_message_set_response(msg, MIME_TYPE, SOUP_MEMORY_COPY,
+            json_body->str, json_body->len);
+
+        g_string_free(json_body, TRUE);
+        json_node_free(json_node);
+        json_object_unref(json_object);
 
         return;
     }
