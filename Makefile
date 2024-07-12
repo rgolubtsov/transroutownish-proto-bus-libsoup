@@ -28,8 +28,8 @@ CFLAGS = -Wall -std=$(CSTD) -march=x86-64 -O3 -pipe -c
 MKDIR   = mkdir
 RMFLAGS = -vR
 
-CFLAGS += `pkg-config --cflags-only-I libsoup-3.0`
-LDLIBS  = `pkg-config   --libs-only-l libsoup-3.0`
+CFLAGS += `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0`
+LDLIBS  = `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0`
 
 LDFLAGS = -o $(EXEC)
 
