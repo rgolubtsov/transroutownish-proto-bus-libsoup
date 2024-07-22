@@ -88,8 +88,6 @@
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
 
-#define SERVER_HEADER "server-header"
-
 // Allowed HTTP methods.
 #define HTTP_HEAD "HEAD"
 #define HTTP_GET  "GET"
@@ -100,6 +98,7 @@
 
 // HTTP response-related constants.
 #define MIME_TYPE                "application/json"
+#define HDR_SERVER_P             "server-header"
 #define HDR_ALLOW_N              "Allow"
 #define HDR_ALLOW_V              "GET, HEAD"
 #define ERROR_JSON_KEY           "error"

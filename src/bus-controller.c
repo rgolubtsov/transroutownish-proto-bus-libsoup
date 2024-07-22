@@ -33,7 +33,7 @@ GMainLoop *startup(const gushort        server_port,
                          _CLEANUP_ARGS *cleanup_args) {
 
     // Creating the Soup web server and the main loop.
-    SoupServer *server = soup_server_new(SERVER_HEADER, EMPTY_STRING, NULL);
+    SoupServer *server = soup_server_new(HDR_SERVER_P, EMPTY_STRING, NULL);
     GMainLoop  *loop   = g_main_loop_new(NULL, FALSE);
 
     cleanup_args->loop = loop;
