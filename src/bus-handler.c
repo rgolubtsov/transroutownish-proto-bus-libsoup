@@ -32,16 +32,18 @@ void request_handler(      SoupServer        *server,
                            gpointer           payload) {
 
     const char *method = soup_server_message_get_method(msg);
+    SoupMessageHeaders *resp_headers
+        = soup_server_message_get_response_headers(msg);
 
     g_debug("[%s][%s]", method, path);
 
     if ((g_strcmp0(   method, HTTP_HEAD) != 0)
         && (g_strcmp0(method, HTTP_GET ) != 0)) {
 
+        soup_message_headers_append(resp_headers, HDR_ALLOW_N, HDR_ALLOW_V);
+
         soup_server_message_set_status(msg,
             SOUP_STATUS_METHOD_NOT_ALLOWED, NULL);
-
-        // TODO: Set response header: "allow: GET, HEAD".
 
         return;
     }

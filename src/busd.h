@@ -100,6 +100,8 @@
 
 // HTTP response-related constants.
 #define MIME_TYPE                "application/json"
+#define HDR_ALLOW_N              "Allow"
+#define HDR_ALLOW_V              "GET, HEAD"
 #define ERROR_JSON_KEY           "error"
 #define ERROR_JSON_VAL_NOT_FOUND "404 Not Found."
 
