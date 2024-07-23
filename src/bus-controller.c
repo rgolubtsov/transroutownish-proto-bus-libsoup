@@ -1,7 +1,7 @@
 /*
  * src/bus-controller.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.1.2
+ * Urban bus routing microservice prototype (C port). Version 0.1.3
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -33,7 +33,7 @@ GMainLoop *startup(const gushort        server_port,
                          _CLEANUP_ARGS *cleanup_args) {
 
     // Creating the Soup web server and the main loop.
-    SoupServer *server = soup_server_new(SERVER_HEADER, EMPTY_STRING, NULL);
+    SoupServer *server = soup_server_new(HDR_SERVER_P, EMPTY_STRING, NULL);
     GMainLoop  *loop   = g_main_loop_new(NULL, FALSE);
 
     cleanup_args->loop = loop;

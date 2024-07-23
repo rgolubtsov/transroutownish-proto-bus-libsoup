@@ -1,7 +1,7 @@
 /*
  * src/busd.h
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.1.2
+ * Urban bus routing microservice prototype (C port). Version 0.1.3
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -88,8 +88,6 @@
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
 
-#define SERVER_HEADER "server-header"
-
 // Allowed HTTP methods.
 #define HTTP_HEAD "HEAD"
 #define HTTP_GET  "GET"
@@ -100,6 +98,9 @@
 
 // HTTP response-related constants.
 #define MIME_TYPE                "application/json"
+#define HDR_SERVER_P             "server-header"
+#define HDR_ALLOW_N              "Allow"
+#define HDR_ALLOW_V              "GET, HEAD"
 #define ERROR_JSON_KEY           "error"
 #define ERROR_JSON_VAL_NOT_FOUND "404 Not Found."
 
