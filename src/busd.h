@@ -104,6 +104,10 @@
 #define ERROR_JSON_KEY           "error"
 #define ERROR_JSON_VAL_NOT_FOUND "404 Not Found."
 
+// HTTP request parameter names.
+#define FROM "from"
+#define TO   "to"
+
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:
  * it is an arbitrary identifier of a route, which is not used
