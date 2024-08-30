@@ -77,10 +77,15 @@ void request_handler(      SoupServer        *server,
     gchar *from_ = g_hash_table_lookup(query, FROM);
     gchar *to_   = g_hash_table_lookup(query, TO  );
 
-    g_debug(          FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
-                      from_,                             to_);
-    syslog(LOG_DEBUG, FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
-                      from_,                             to_);
+    HANDLER_PAYLOAD *handler_payload = payload;
+    gboolean debug_log_enabled = handler_payload->debug_log_enabled;
+
+    if (debug_log_enabled) {
+        g_debug(          FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
+                          from_,                             to_);
+        syslog(LOG_DEBUG, FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
+                          from_,                             to_);
+    }
 
     // ------------------------------------------------------------------------
     // --- Parsing and validating request params - Begin ----------------------
