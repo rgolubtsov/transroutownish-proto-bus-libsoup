@@ -51,13 +51,14 @@ GMainLoop *startup(const gushort        server_port,
     g_unix_signal_add(SIGINT,  (GSourceFunc) _cleanup, cleanup_args);
     g_unix_signal_add(SIGTERM, (GSourceFunc) _cleanup, cleanup_args);
 
+    // Attaching HTTP request handlers to process incoming requests -----------
     HANDLER_PAYLOAD *handler_payload   = malloc(sizeof(HANDLER_PAYLOAD));
     handler_payload->debug_log_enabled = debug_log_enabled;
     handler_payload->routes_list       = routes_list;
 
-    // Attaching HTTP request handlers to process incoming requests.
     soup_server_add_handler(server, NULL, request_handler,
                                           handler_payload, NULL);
+    // ------------------------------------------------------------------------
 
     GError *error = NULL;
 
@@ -76,6 +77,8 @@ GMainLoop *startup(const gushort        server_port,
         }
 
         g_clear_error(&error);
+
+        free(handler_payload);
 
         _cleanup(cleanup_args);
         free(cleanup_args);
