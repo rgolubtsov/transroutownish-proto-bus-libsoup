@@ -74,8 +74,13 @@ void request_handler(      SoupServer        *server,
         return;
     }
 
-    gchar *from_ = g_hash_table_lookup(query, FROM);
-    gchar *to_   = g_hash_table_lookup(query, TO  );
+    gchar *from_ = EMPTY_STRING;
+    gchar *to_   = EMPTY_STRING;
+
+    if (query != NULL) {
+        from_ = g_hash_table_lookup(query, FROM);
+        to_   = g_hash_table_lookup(query, TO  );
+    }
 
     HANDLER_PAYLOAD *handler_payload = payload;
     gboolean debug_log_enabled = handler_payload->debug_log_enabled;
