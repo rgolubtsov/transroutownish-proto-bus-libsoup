@@ -74,6 +74,38 @@ void request_handler(      SoupServer        *server,
         return;
     }
 
+    gchar *from_ = EMPTY_STRING;
+    gchar *to_   = EMPTY_STRING;
+
+    if (query != NULL) {
+        from_ = g_hash_table_lookup(query, FROM);
+        to_   = g_hash_table_lookup(query, TO  );
+    }
+
+    HANDLER_PAYLOAD *handler_payload = payload;
+    gboolean debug_log_enabled = handler_payload->debug_log_enabled;
+
+    if (debug_log_enabled) {
+        g_debug(          FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
+                          from_,                             to_);
+        syslog(LOG_DEBUG, FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
+                          from_,                             to_);
+    }
+
+    // ------------------------------------------------------------------------
+    // --- Parsing and validating request params - Begin ----------------------
+    // ------------------------------------------------------------------------
+    gboolean is_request_malformed __attribute__ ((unused)) = FALSE;
+
+    gchar *from __attribute__ ((unused)) = EMPTY_STRING;
+    gchar *to   __attribute__ ((unused)) = EMPTY_STRING;
+
+    // TODO: Implement parsing and validating request params mechs.
+
+    // ------------------------------------------------------------------------
+    // --- Parsing and validating request params - End ------------------------
+    // ------------------------------------------------------------------------
+
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
 }
 

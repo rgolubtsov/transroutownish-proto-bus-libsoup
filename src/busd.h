@@ -104,6 +104,10 @@
 #define ERROR_JSON_KEY           "error"
 #define ERROR_JSON_VAL_NOT_FOUND "404 Not Found."
 
+// HTTP request parameter names.
+#define FROM "from"
+#define TO   "to"
+
 /**
  * The regex pattern for the element to be excluded from a bus stops sequence:
  * it is an arbitrary identifier of a route, which is not used
@@ -138,8 +142,13 @@ typedef struct {
 // Starts up the Soup web server and the main loop.
 GMainLoop *startup(const gushort,
                    const gboolean,
-                   const GPtrArray *,
+                         GPtrArray *,
                          _CLEANUP_ARGS *);
+
+typedef struct {
+    gboolean   debug_log_enabled;
+    GPtrArray *routes_list;
+} HANDLER_PAYLOAD;
 
 // The default request handler callback. Used to process the incoming request.
 void request_handler(      SoupServer *,
