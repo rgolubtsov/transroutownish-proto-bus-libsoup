@@ -144,4 +144,14 @@ Apr 18 01:40:30 <hostname> busd[<pid>]: Server stopped
 
 When the query string passed in a request, contains inappropriate input, or the URI endpoint doesn't contain anything else at all after its path, the microservice will respond with the **HTTP 400 Bad Request** status code, including a specific response body in JSON representation, like the following:
 
-**TBD** :dvd:
+```
+$ curl 'http://localhost:8765/route/direct?from=qwerty4838&to=-i-.;--089asdf../nj524987'
+{"error":"Request parameters must take positive integer values, in the range 1 .. 2,147,483,647. Please check your inputs."}
+```
+
+Or even simpler:
+
+```
+$ curl http://localhost:8765/route/direct
+{"error":"Request parameters must take positive integer values, in the range 1 .. 2,147,483,647. Please check your inputs."}
+```
