@@ -31,11 +31,11 @@ void request_handler(      SoupServer        *server,
                            GHashTable        *query,
                            gpointer           payload) {
 
+    const char *uri = g_uri_to_string(soup_server_message_get_uri(msg));
+
     const char *method = soup_server_message_get_method(msg);
     SoupMessageHeaders *resp_headers
         = soup_server_message_get_response_headers(msg);
-
-    g_debug("[%s][%s]", method, path);
 
     if ((g_strcmp0(   method, HTTP_HEAD) != 0)
         && (g_strcmp0(method, HTTP_GET ) != 0)) {
@@ -50,7 +50,7 @@ void request_handler(      SoupServer        *server,
 
     // GET /route/direct
     if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
-        g_debug("[%s]", path);
+        g_debug("%s", uri);
 
         soup_server_message_set_status(msg, SOUP_STATUS_NOT_FOUND, NULL);
 
@@ -109,6 +109,8 @@ void request_handler(      SoupServer        *server,
     // ------------------------------------------------------------------------
 
     if (is_request_malformed) {
+        g_debug("%s", uri);
+
         soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
 
         JsonObject    *json_object = json_object_new();
