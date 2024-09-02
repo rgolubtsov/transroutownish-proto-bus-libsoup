@@ -48,6 +48,7 @@ void request_handler(      SoupServer        *server,
         return;
     }
 
+    // GET /route/direct
     if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
         g_debug("[%s]", path);
 
@@ -95,16 +96,41 @@ void request_handler(      SoupServer        *server,
     // ------------------------------------------------------------------------
     // --- Parsing and validating request params - Begin ----------------------
     // ------------------------------------------------------------------------
-    gboolean is_request_malformed __attribute__ ((unused)) = FALSE;
+    gboolean is_request_malformed = FALSE;
 
-    gchar *from __attribute__ ((unused)) = EMPTY_STRING;
-    gchar *to   __attribute__ ((unused)) = EMPTY_STRING;
+    unsigned from = g_ascii_strtoull(from_, NULL, 10);
+    unsigned to   = g_ascii_strtoull(to_,   NULL, 10);
 
-    // TODO: Implement parsing and validating request params mechs.
-
+    if ((from < 1) || (to < 1)) {
+        is_request_malformed = TRUE;
+    }
     // ------------------------------------------------------------------------
     // --- Parsing and validating request params - End ------------------------
     // ------------------------------------------------------------------------
+
+    if (is_request_malformed) {
+        soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
+
+        JsonObject    *json_object = json_object_new();
+        JsonNode      *json_node   = json_node_new(JSON_NODE_OBJECT);
+        JsonGenerator *json_gen    = json_generator_new();
+        GString       *json_body   = g_string_new(NULL);
+
+        json_object_set_string_member(json_object, ERROR_JSON_KEY,
+            ERR_REQ_PARAMS_MUST_BE_POSITIVE_INTS);
+        json_node = json_node_init_object(json_node, json_object);
+        json_generator_set_root(json_gen, json_node);
+        json_body = json_generator_to_gstring(json_gen, json_body);
+
+        soup_server_message_set_response(msg, MIME_TYPE, SOUP_MEMORY_COPY,
+            json_body->str, json_body->len);
+
+        g_string_free(json_body, TRUE);
+        json_node_free(json_node);
+        json_object_unref(json_object);
+
+        return;
+    }
 
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
 }

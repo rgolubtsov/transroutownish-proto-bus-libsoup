@@ -41,6 +41,9 @@
 #define ERR_SERV_UNKNOWN_REASON "for an unknown reason. Quitting..."
 #define ERR_ADDR_ALREADY_IN_USE "due to address requested already in use. " \
     "Quitting..."
+#define ERR_REQ_PARAMS_MUST_BE_POSITIVE_INTS "Request parameters must take " \
+    "positive integer values, in the range 1 .. 2,147,483,647. " \
+    "Please check your inputs."
 #define ERR_EADDRINUSE_CODE 33
 
 // Common notification messages.
@@ -145,6 +148,8 @@ GMainLoop *startup(const gushort,
                          GPtrArray *,
                          _CLEANUP_ARGS *);
 
+// The structure to hold request handler payload data
+// to pass to the default request handler callback.
 typedef struct {
     gboolean   debug_log_enabled;
     GPtrArray *routes_list;
