@@ -123,10 +123,14 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 ```
 $ tail -f log/bus.log
 ...
-[2024-04-18][01:40:30][DEBUG]  1 1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+[2024-09-03][22:40:10][INFO ]  Server started on port 8765
+[2024-09-03][22:40:20][DEBUG]  from=4838 | to=524987
+[2024-09-03][22:40:20][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
-[2024-04-18][01:40:30][INFO ]  Server started on port 8765
-[2024-04-18][01:40:30][INFO ]  Server stopped
+[2024-09-03][22:40:41][DEBUG]  from=82 | to=35390
+[2024-09-03][22:40:41][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+...
+[2024-09-03][22:40:51][INFO ]  Server stopped
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -134,8 +138,10 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Apr 18 01:40:30 <hostname> busd[<pid>]: Server started on port 8765
-Apr 18 01:40:30 <hostname> busd[<pid>]: Server stopped
+Sep 03 22:40:10 <hostname> busd[<pid>]: Server started on port 8765
+Sep 03 22:40:20 <hostname> busd[<pid>]: from=4838 | to=524987
+Sep 03 22:40:41 <hostname> busd[<pid>]: from=82 | to=35390
+Sep 03 22:40:51 <hostname> busd[<pid>]: Server stopped
 ```
 
 **TBD** :cd:
