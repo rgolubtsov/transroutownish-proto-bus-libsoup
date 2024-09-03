@@ -1,7 +1,7 @@
 /*
  * src/busd.h
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.2.0
+ * Urban bus routing microservice prototype (C port). Version 0.2.5
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -90,6 +90,7 @@
 
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
+#define INT_FORMAT "%d"
 
 // Allowed HTTP methods.
 #define HTTP_HEAD "HEAD"
@@ -117,6 +118,18 @@
  * in the routes processing anyhow.
  */
 #define ROUTE_ID_REGEX "^\\d+"
+
+/**
+ * The regex pattern for the leading part of a bus stops sequence,
+ * before the matching element.
+ */
+#define SEQ1_REGEX ".*\\s"
+
+/**
+ * The regex pattern for the trailing part of a bus stops sequence,
+ * after the matching element.
+ */
+#define SEQ2_REGEX "\\s.*"
 
 // The log writer callback. Gets called on every message logging attempt.
 GLogWriterOutput log_writer(      GLogLevelFlags,
@@ -161,6 +174,13 @@ void request_handler(      SoupServer *,
                      const char *,
                            GHashTable *,
                            gpointer);
+
+// Performs the routes processing to identify and return whether a particular
+// interval between two bus stop points given is direct, or not.
+gboolean find_direct_route(const gboolean,
+                           const GPtrArray *,
+                           const gchar *,
+                           const gchar *);
 
 // Helper protos.
 GKeyFile *_get_settings();

@@ -1,7 +1,7 @@
 /*
  * src/bus-handler.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.2.0
+ * Urban bus routing microservice prototype (C port). Version 0.2.5
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -31,11 +31,11 @@ void request_handler(      SoupServer        *server,
                            GHashTable        *query,
                            gpointer           payload) {
 
+    const char *uri = g_uri_to_string(soup_server_message_get_uri(msg));
+
     const char *method = soup_server_message_get_method(msg);
     SoupMessageHeaders *resp_headers
         = soup_server_message_get_response_headers(msg);
-
-    g_debug("[%s][%s]", method, path);
 
     if ((g_strcmp0(   method, HTTP_HEAD) != 0)
         && (g_strcmp0(method, HTTP_GET ) != 0)) {
@@ -50,7 +50,7 @@ void request_handler(      SoupServer        *server,
 
     // GET /route/direct
     if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
-        g_debug("[%s]", path);
+        g_debug(LOG_FORMAT, uri);
 
         soup_server_message_set_status(msg, SOUP_STATUS_NOT_FOUND, NULL);
 
@@ -87,10 +87,10 @@ void request_handler(      SoupServer        *server,
     gboolean debug_log_enabled = handler_payload->debug_log_enabled;
 
     if (debug_log_enabled) {
-        g_debug(          FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
-                          from_,                             to_);
-        syslog(LOG_DEBUG, FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
-                          from_,                             to_);
+g_debug(         FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
+                 from_,                                   to_);
+syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
+                 from_,                                   to_);
     }
 
     // ------------------------------------------------------------------------
@@ -109,6 +109,8 @@ void request_handler(      SoupServer        *server,
     // ------------------------------------------------------------------------
 
     if (is_request_malformed) {
+        g_debug(LOG_FORMAT, uri);
+
         soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
 
         JsonObject    *json_object = json_object_new();
@@ -132,7 +134,84 @@ void request_handler(      SoupServer        *server,
         return;
     }
 
+    GPtrArray *routes_list = handler_payload->routes_list;
+
+    snprintf(from_, 1000000, INT_FORMAT, from);
+    snprintf(to_,   1000000, INT_FORMAT, to  );
+
+    // Performing the routes processing to find out the direct route.
+    gboolean direct __attribute__ ((unused)) = find_direct_route(
+        debug_log_enabled,
+        routes_list,
+        from_,
+        to_);
+
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
+}
+
+/**
+ * Performs the routes processing (onto bus stops sequences) to identify
+ * and return whether a particular interval between two bus stop points
+ * given is direct (i.e. contains in any of the routes), or not.
+ *
+ * @param debug_log_enabled The debug logging enabler.
+ * @param routes_list       A list containing all available routes.
+ * @param from              The starting bus stop point.
+ * @param to                The ending   bus stop point.
+ *
+ * @return <code>TRUE</code> if the direct route is found,
+ *         <code>FALSE</code> otherwise.
+ */
+gboolean find_direct_route(const gboolean   debug_log_enabled,
+                           const GPtrArray *routes_list,
+                           const gchar     *from,
+                           const gchar     *to) {
+
+//  guint routes_len = routes_list->len;
+
+//  for (guint i = 0; i < routes_len; i++) {
+//      g_debug("%u" SPACE EQUALS SPACE LOG_FORMAT, (i + 1),
+//          (gchar *) g_ptr_array_index(routes_list, i));
+//  }
+
+    gboolean direct = FALSE;
+
+    // Two bus stop points in a route cannot point up to the same value.
+    if (g_strcmp0(from, to) == 0) { return direct; }
+
+    gchar *route = EMPTY_STRING, *route_from = EMPTY_STRING;
+
+    guint routes_count = routes_list->len;
+
+    for (guint i = 0; i < routes_count; i++) {
+        route = g_ptr_array_index(routes_list, i);
+
+        if (debug_log_enabled) {
+            g_debug(INT_FORMAT SPACE EQUALS SPACE LOG_FORMAT, (i + 1), route);
+        }
+
+        if (g_regex_match_simple(g_strconcat(SEQ1_REGEX, from, SEQ2_REGEX,
+            NULL), route, 0, 0)) {
+
+            // Pinning in the starting bus stop point, if it's found.
+            // Next, searching for the ending bus stop point
+            // on the current route, beginning at the pinned point.
+            route_from = g_strrstr(route, from);
+
+            if (debug_log_enabled) {
+                g_debug(LOG_FORMAT SPACE V_BAR SPACE LOG_FORMAT,
+                    from, route_from);
+            }
+
+            if (g_regex_match_simple(g_strconcat(SEQ1_REGEX, to, SEQ2_REGEX,
+                NULL), route_from, 0, 0)) {
+
+                direct = TRUE; break;
+            }
+        }
+    }
+
+    return direct;
 }
 
 // vim:set nu et ts=4 sw=4:
