@@ -50,7 +50,7 @@ void request_handler(      SoupServer        *server,
 
     // GET /route/direct
     if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
-        g_debug("%s", uri);
+        g_debug(LOG_FORMAT, uri);
 
         soup_server_message_set_status(msg, SOUP_STATUS_NOT_FOUND, NULL);
 
@@ -87,10 +87,10 @@ void request_handler(      SoupServer        *server,
     gboolean debug_log_enabled = handler_payload->debug_log_enabled;
 
     if (debug_log_enabled) {
-        g_debug(          FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
-                          from_,                             to_);
-        syslog(LOG_DEBUG, FROM EQUALS "%s" SPACE V_BAR SPACE TO EQUALS "%s",
-                          from_,                             to_);
+g_debug(         FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
+                 from_,                                   to_);
+syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
+                 from_,                                   to_);
     }
 
     // ------------------------------------------------------------------------
@@ -109,7 +109,7 @@ void request_handler(      SoupServer        *server,
     // ------------------------------------------------------------------------
 
     if (is_request_malformed) {
-        g_debug("%s", uri);
+        g_debug(LOG_FORMAT, uri);
 
         soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
 
@@ -134,7 +134,42 @@ void request_handler(      SoupServer        *server,
         return;
     }
 
+    GPtrArray *routes_list = handler_payload->routes_list;
+
+    snprintf(from_, 1000000, INT_FORMAT, from);
+    snprintf(to_,   1000000, INT_FORMAT, to  );
+
+    // Performing the routes processing to find out the direct route.
+    gboolean direct = find_direct_route(
+        debug_log_enabled,
+        routes_list,
+        from_,
+        to_);
+
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
+}
+
+/**
+ * Performs the routes processing (onto bus stops sequences) to identify
+ * and return whether a particular interval between two bus stop points
+ * given is direct (i.e. contains in any of the routes), or not.
+ *
+ * @param debug_log_enabled The debug logging enabler.
+ * @param routes_list       A list containing all available routes.
+ * @param from              The starting bus stop point.
+ * @param to                The ending   bus stop point.
+ *
+ * @return <code>TRUE</code> if the direct route is found,
+ *         <code>FALSE</code> otherwise.
+ */
+gboolean find_direct_route(const gboolean   debug_log_enabled,
+                           const GPtrArray *routes_list,
+                           const gchar     *from,
+                           const gchar     *to) {
+
+    g_debug(INT_FORMAT, debug_log_enabled);
+
+    return FALSE;
 }
 
 // vim:set nu et ts=4 sw=4:

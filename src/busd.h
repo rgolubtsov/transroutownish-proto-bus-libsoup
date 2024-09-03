@@ -90,6 +90,7 @@
 
 #define DTM_FORMAT "%02u"
 #define LOG_FORMAT "%s"
+#define INT_FORMAT "%d"
 
 // Allowed HTTP methods.
 #define HTTP_HEAD "HEAD"
@@ -161,6 +162,13 @@ void request_handler(      SoupServer *,
                      const char *,
                            GHashTable *,
                            gpointer);
+
+// Performs the routes processing to identify and return whether a particular
+// interval between two bus stop points given is direct, or not.
+gboolean find_direct_route(const gboolean,
+                           const GPtrArray *,
+                           const gchar *,
+                           const gchar *);
 
 // Helper protos.
 GKeyFile *_get_settings();
