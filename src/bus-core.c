@@ -124,7 +124,6 @@ int main(int argc, char *const *argv) {
 //      g_debug("%u" SPACE EQUALS SPACE LOG_FORMAT, (i + 1),
 //          (gchar *) g_ptr_array_index(routes_gary, i));
 
-        g_free(route );
         g_free(route_);
     }
 
