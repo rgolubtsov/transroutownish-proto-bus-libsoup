@@ -119,6 +119,18 @@
  */
 #define ROUTE_ID_REGEX "^\\d+"
 
+/**
+ * The regex pattern for the leading part of a bus stops sequence,
+ * before the matching element.
+ */
+#define SEQ1_REGEX ".*\\s"
+
+/**
+ * The regex pattern for the trailing part of a bus stops sequence,
+ * after the matching element.
+ */
+#define SEQ2_REGEX "\\s.*"
+
 // The log writer callback. Gets called on every message logging attempt.
 GLogWriterOutput log_writer(      GLogLevelFlags,
                             const GLogField *,
