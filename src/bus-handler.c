@@ -146,6 +146,8 @@ syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
         from_,
         to_);
 
+    g_debug(INT_FORMAT, direct);
+
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
 }
 
@@ -167,9 +169,51 @@ gboolean find_direct_route(const gboolean   debug_log_enabled,
                            const gchar     *from,
                            const gchar     *to) {
 
-    g_debug(INT_FORMAT, debug_log_enabled);
+//  guint routes_len = routes_list->len;
 
-    return FALSE;
+//  for (guint i = 0; i < routes_len; i++) {
+//      g_debug("%u" SPACE EQUALS SPACE LOG_FORMAT, (i + 1),
+//          (gchar *) g_ptr_array_index(routes_list, i));
+//  }
+
+    gboolean direct = FALSE;
+
+    // Two bus stop points in a route cannot point up to the same value.
+    if (g_strcmp0(from, to) == 0) { return direct; }
+
+    gchar *route = EMPTY_STRING, *route_from = EMPTY_STRING;
+
+    guint routes_count = routes_list->len;
+
+    for (guint i = 0; i < routes_count; i++) {
+        route = g_ptr_array_index(routes_list, i);
+
+        if (debug_log_enabled) {
+            g_debug(INT_FORMAT SPACE EQUALS SPACE LOG_FORMAT, (i + 1), route);
+        }
+
+        if (g_regex_match_simple(g_strconcat(SEQ1_REGEX, from, SEQ2_REGEX,
+            NULL), route, 0, 0)) {
+
+            // Pinning in the starting bus stop point, if it's found.
+            // Next, searching for the ending bus stop point
+            // on the current route, beginning at the pinned point.
+            route_from = g_strrstr(route, from);
+
+            if (debug_log_enabled) {
+                g_debug(LOG_FORMAT SPACE V_BAR SPACE LOG_FORMAT,
+                    from, route_from);
+            }
+
+            if (g_regex_match_simple(g_strconcat(SEQ1_REGEX, to, SEQ2_REGEX,
+                NULL), route_from, 0, 0)) {
+
+                direct = TRUE; break;
+            }
+        }
+    }
+
+    return direct;
 }
 
 // vim:set nu et ts=4 sw=4:
