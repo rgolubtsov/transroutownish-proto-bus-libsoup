@@ -140,13 +140,11 @@ syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
     snprintf(to_,   1000000, INT_FORMAT, to  );
 
     // Performing the routes processing to find out the direct route.
-    gboolean direct = find_direct_route(
+    gboolean direct __attribute__ ((unused)) = find_direct_route(
         debug_log_enabled,
         routes_list,
         from_,
         to_);
-
-    g_debug(INT_FORMAT, direct);
 
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
 }
