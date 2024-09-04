@@ -1,7 +1,7 @@
 /*
  * src/bus-handler.c
  * ============================================================================
- * Urban bus routing microservice prototype (C port). Version 0.2.5
+ * Urban bus routing microservice prototype (C port). Version 0.3.0
  * ============================================================================
  * A daemon written in C (GNOME/libsoup), designed and intended to be run
  * as a microservice, implementing a simple urban bus routing prototype.
@@ -48,16 +48,16 @@ void request_handler(      SoupServer        *server,
         return;
     }
 
+    JsonObject    *json_object = json_object_new();
+    JsonNode      *json_node   = json_node_new(JSON_NODE_OBJECT);
+    JsonGenerator *json_gen    = json_generator_new();
+    GString       *json_body   = g_string_new(NULL);
+
     // GET /route/direct
     if (g_strcmp0(path, SLASH REST_PREFIX SLASH REST_DIRECT) != 0) {
         g_debug(LOG_FORMAT, uri);
 
         soup_server_message_set_status(msg, SOUP_STATUS_NOT_FOUND, NULL);
-
-        JsonObject    *json_object = json_object_new();
-        JsonNode      *json_node   = json_node_new(JSON_NODE_OBJECT);
-        JsonGenerator *json_gen    = json_generator_new();
-        GString       *json_body   = g_string_new(NULL);
 
         json_object_set_string_member(json_object, ERROR_JSON_KEY,
             ERROR_JSON_VAL_NOT_FOUND);
@@ -113,11 +113,6 @@ syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
 
         soup_server_message_set_status(msg, SOUP_STATUS_BAD_REQUEST, NULL);
 
-        JsonObject    *json_object = json_object_new();
-        JsonNode      *json_node   = json_node_new(JSON_NODE_OBJECT);
-        JsonGenerator *json_gen    = json_generator_new();
-        GString       *json_body   = g_string_new(NULL);
-
         json_object_set_string_member(json_object, ERROR_JSON_KEY,
             ERR_REQ_PARAMS_MUST_BE_POSITIVE_INTS);
         json_node = json_node_init_object(json_node, json_object);
@@ -136,17 +131,38 @@ syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
 
     GPtrArray *routes_list = handler_payload->routes_list;
 
-    snprintf(from_, 1000000, INT_FORMAT, from);
-    snprintf(to_,   1000000, INT_FORMAT, to  );
+    int len_from_ = snprintf(NULL, 0, INT_FORMAT, from);
+    int len_to_   = snprintf(NULL, 0, INT_FORMAT, to  );
+            from_ = malloc(len_from_ + 1);
+            to_   = malloc(len_to_   + 1);
+    snprintf(from_, (len_from_ + 1),  INT_FORMAT, from);
+    snprintf(to_,   (len_to_   + 1),  INT_FORMAT, to  );
 
     // Performing the routes processing to find out the direct route.
-    gboolean direct __attribute__ ((unused)) = find_direct_route(
+    gboolean direct = find_direct_route(
         debug_log_enabled,
         routes_list,
         from_,
         to_);
 
-    soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
+    free(to_  );
+    free(from_);
+
+    soup_server_message_set_status(msg, SOUP_STATUS_OK, NULL);
+
+    json_object_set_int_member(    json_object, FROM,        from  );
+    json_object_set_int_member(    json_object, TO,          to    );
+    json_object_set_boolean_member(json_object, REST_DIRECT, direct);
+    json_node = json_node_init_object(json_node, json_object);
+    json_generator_set_root(json_gen, json_node);
+    json_body = json_generator_to_gstring(json_gen, json_body);
+
+    soup_server_message_set_response(msg, MIME_TYPE, SOUP_MEMORY_COPY,
+        json_body->str, json_body->len);
+
+    g_string_free(json_body, TRUE);
+    json_node_free(json_node);
+    json_object_unref(json_object);
 }
 
 /**
