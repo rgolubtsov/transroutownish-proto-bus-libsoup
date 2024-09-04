@@ -104,6 +104,7 @@ The direct route is found:
 
 ```
 $ curl 'http://localhost:8765/route/direct?from=4838&to=524987'
+{"from":4838,"to":524987,"direct":true}
 ...
 ```
 
@@ -111,10 +112,9 @@ The direct route is not found:
 
 ```
 $ curl 'http://localhost:8765/route/direct?from=82&to=35390'
+{"from":82,"to":35390,"direct":false}
 ...
 ```
-
-**TBD** :cd:
 
 ### Logging
 
