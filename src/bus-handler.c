@@ -136,8 +136,12 @@ syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
 
     GPtrArray *routes_list = handler_payload->routes_list;
 
-    snprintf(from_, 1000000, INT_FORMAT, from);
-    snprintf(to_,   1000000, INT_FORMAT, to  );
+    int len_from_ = snprintf(NULL, 0, INT_FORMAT, from);
+    int len_to_   = snprintf(NULL, 0, INT_FORMAT, to  );
+            from_ = malloc(len_from_ + 1);
+            to_   = malloc(len_to_   + 1);
+    snprintf(from_, (len_from_ + 1),  INT_FORMAT, from);
+    snprintf(to_,   (len_to_   + 1),  INT_FORMAT, to  );
 
     // Performing the routes processing to find out the direct route.
     gboolean direct __attribute__ ((unused)) = find_direct_route(
@@ -145,6 +149,9 @@ syslog(LOG_DEBUG,FROM EQUALS LOG_FORMAT SPACE V_BAR SPACE TO EQUALS LOG_FORMAT,
         routes_list,
         from_,
         to_);
+
+    free(to_  );
+    free(from_);
 
     soup_server_message_set_status(msg, SOUP_STATUS_NO_CONTENT, NULL);
 }
