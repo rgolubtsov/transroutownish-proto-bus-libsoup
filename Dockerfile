@@ -12,13 +12,16 @@
 #
 
 # === Stage 1: Install dependencies ===========================================
+# Note: Need to use Alpine `edge` image instead of `latest` due to utilizing
+#       the Tiny C Compiler (TCC) at linking pass. TCC is currently available
+#       in the [testing] repository of the `edge` branch only.
 FROM       alpine:edge
-RUN        ["apk", "add", "make"           ]
-RUN        ["apk", "add", "gcc"            ]
-RUN        ["apk", "add", "pkgconf"        ]
-RUN        ["apk", "add", "musl-dev"       ]
-RUN        ["apk", "add", "libsoup3-dev"   ]
-RUN        ["apk", "add", "json-glib-dev"  ]
+RUN        ["apk", "add", "make"           ] #         +----------+
+RUN        ["apk", "add", "gcc"            ] #         |  Alpine  |
+RUN        ["apk", "add", "pkgconf"        ] #         |  Linux   |
+RUN        ["apk", "add", "musl-dev"       ] #         +----------+
+RUN        ["apk", "add", "libsoup3-dev"   ] #         |          |
+RUN        ["apk", "add", "json-glib-dev"  ] #         V          V
 RUN        echo 'https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
 RUN        ["apk", "add", "tcc"            ]
 RUN        ["apk", "add", "tcc-libs-static"]
