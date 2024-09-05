@@ -11,8 +11,19 @@
 # (See the LICENSE file at the top of the source tree.)
 #
 
-# === Stage 1: Build the microservice =========================================
-FROM       alpine:latest AS build
+# === Stage 1: Install dependencies ===========================================
+FROM       alpine:edge
+RUN        ["apk", "add", "make"           ]
+RUN        ["apk", "add", "gcc"            ]
+RUN        ["apk", "add", "pkgconf"        ]
+RUN        ["apk", "add", "musl-dev"       ]
+RUN        ["apk", "add", "libsoup3-dev"   ]
+RUN        ["apk", "add", "json-glib-dev"  ]
+RUN        echo 'https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
+RUN        ["apk", "add", "tcc"            ]
+RUN        ["apk", "add", "tcc-libs-static"]
+
+# === Stage 2: Build the microservice =========================================
 USER       daemon
 WORKDIR    var/tmp
 RUN        ["mkdir", "-p", "bus/src", "bus/etc", "bus/data"]
@@ -24,7 +35,7 @@ WORKDIR    bus
 RUN        ["make", "clean"]
 RUN        ["make", "all"  ]
 
-# === Stage 2: Run the microservice ===========================================
+# === Stage 3: Run the microservice ===========================================
 ENTRYPOINT ["bus/bin/busd"]
 
 # vim:set nu ts=4 sw=4:
