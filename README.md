@@ -39,7 +39,10 @@ One may consider this project has to be suitable for a wide variety of applied a
 ## Table of Contents
 
 * **[Building](#building)**
+  * **[Creating a Docker image](#creating-a-docker-image)**
 * **[Running](#running)**
+  * **[Running a Docker image](#running-a-docker-image)**
+  * **[Exploring a Docker image payload](#exploring-a-docker-image-payload)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
   * **[Error handling](#error-handling)**
@@ -80,6 +83,19 @@ fi
 tcc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
 ```
 
+### Creating a Docker image
+
+**Build** a Docker image for the microservice:
+
+```
+$ # Pull the Alpine Linux image first, if not already there:
+$ sudo docker pull alpine:edge
+...
+$ # Then build the microservice image:
+$ sudo docker build -ttransroutownish/busc99 .
+...
+```
+
 ## Running
 
 **Run** the microservice using its executable directly, built previously by the `all` target:
@@ -87,6 +103,96 @@ tcc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -o bin/busd src/bus-c
 ```
 $ ./bin/busd; echo $?
 ...
+```
+
+### Running a Docker image
+
+**Run** a Docker image of the microservice, deleting all stopped containers prior to that:
+
+```
+$ sudo docker rm `sudo docker ps -aq`; \
+  export PORT=8765 && sudo docker run -dp${PORT}:${PORT} --name busc99 transroutownish/busc99; echo $?
+...
+```
+
+### Exploring a Docker image payload
+
+The following is not necessary but might be considered interesting &mdash; to look up into the running container, and check out that the microservice's executable, config, log, and routes data store are at their expected places and in effect:
+
+```
+$ sudo docker ps -a
+CONTAINER ID   IMAGE                    COMMAND      CREATED             STATUS             PORTS                                       NAMES
+<container_id> transroutownish/busc99   "bin/busd"   About an hour ago   Up About an hour   0.0.0.0:8765->8765/tcp, :::8765->8765/tcp   busc99
+$
+$ sudo docker exec -it busc99 sh; echo $?
+/var/tmp/bus $
+/var/tmp/bus $ uname -a
+Linux <container_id> 5.15.0-119-generic #129-Ubuntu SMP Fri Aug 2 19:25:20 UTC 2024 x86_64 Linux
+/var/tmp/bus $
+/var/tmp/bus $ ls -al
+total 36
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 .
+drwxrwxrwt    1 root     root          4096 Sep  5 19:21 ..
+-rw-rw-r--    1 root     root          1443 Sep  5 18:40 Makefile
+drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:22 bin
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 data
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 etc
+drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:30 log
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:22 src
+/var/tmp/bus $
+/var/tmp/bus $ ls -al bin/ data/ etc/ log/ src/
+bin/:
+total 28
+drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:22 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
+-rwxr-xr-x    1 daemon   daemon       20328 Sep  5 19:22 busd
+
+data/:
+total 56
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
+-rw-rw-r--    1 root     root         46218 Nov 13  2023 routes.txt
+
+etc/:
+total 12
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
+-rw-rw-r--    1 root     root           808 Sep  5 18:50 settings.conf
+
+log/:
+total 12
+drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:30 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
+-rw-r--r--    1 daemon   daemon          59 Sep  5 19:30 bus.log
+
+src/:
+total 84
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:22 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
+-rw-rw-r--    1 root     root          3311 Sep  5 18:40 bus-controller.c
+-rw-r--r--    1 daemon   daemon        4064 Sep  5 19:22 bus-controller.o
+-rw-rw-r--    1 root     root          4836 Sep  5 18:40 bus-core.c
+-rw-r--r--    1 daemon   daemon        5968 Sep  5 19:22 bus-core.o
+-rw-rw-r--    1 root     root          8452 Sep  5 18:40 bus-handler.c
+-rw-r--r--    1 daemon   daemon        8728 Sep  5 19:22 bus-handler.o
+-rw-rw-r--    1 root     root          7593 Sep  5 18:40 bus-helper.c
+-rw-r--r--    1 daemon   daemon       10096 Sep  5 19:22 bus-helper.o
+-rw-rw-r--    1 root     root          6075 Sep  5 18:40 busd.h
+/var/tmp/bus $
+/var/tmp/bus $ netstat -plunt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:8765            0.0.0.0:*               LISTEN      1/busd
+tcp        0      0 :::8765                 :::*                    LISTEN      1/busd
+/var/tmp/bus $
+/var/tmp/bus $ ps ax
+PID   USER     TIME  COMMAND
+    1 daemon    0:00 bin/busd
+    9 daemon    0:00 sh
+   19 daemon    0:00 ps ax
+/var/tmp/bus $
+/var/tmp/bus $ exit # Or simply <Ctrl-D>.
+0
 ```
 
 ## Consuming
@@ -105,7 +211,6 @@ The direct route is found:
 ```
 $ curl 'http://localhost:8765/route/direct?from=4838&to=524987'
 {"from":4838,"to":524987,"direct":true}
-...
 ```
 
 The direct route is not found:
@@ -113,7 +218,6 @@ The direct route is not found:
 ```
 $ curl 'http://localhost:8765/route/direct?from=82&to=35390'
 {"from":82,"to":35390,"direct":false}
-...
 ```
 
 ### Logging
