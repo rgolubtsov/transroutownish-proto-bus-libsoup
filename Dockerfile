@@ -16,9 +16,10 @@ FROM       alpine:latest AS build
 USER       daemon
 WORKDIR    var/tmp
 RUN        ["mkdir", "-p", "bus/src", "bus/etc", "bus/data"]
-COPY       src  bus/src/
-COPY       etc  bus/etc/
-COPY       data bus/data/
+COPY       src      bus/src/
+COPY       etc      bus/etc/
+COPY       data     bus/data/
+COPY       Makefile bus/
 WORKDIR    bus
 RUN        ["make", "clean"]
 RUN        ["make", "all"  ]
