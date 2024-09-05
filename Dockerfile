@@ -36,6 +36,6 @@ RUN        ["make", "clean"]
 RUN        ["make", "all"  ]
 
 # === Stage 3: Run the microservice ===========================================
-ENTRYPOINT ["bus/bin/busd"]
+ENTRYPOINT ["bin/busd"]
 
 # vim:set nu ts=4 sw=4:
