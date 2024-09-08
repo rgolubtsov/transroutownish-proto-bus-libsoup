@@ -179,6 +179,30 @@ drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
 -rw-r--r--    1 daemon   daemon       10096 Sep  5 19:22 bus-helper.o
 -rw-rw-r--    1 root     root          6075 Sep  5 18:40 busd.h
 /var/tmp/bus $
+/var/tmp/bus $ ldd bin/busd
+        /lib/ld-musl-x86_64.so.1 (0x7f746a2ba000)
+        libsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x7f746a23c000)
+        libgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x7f746a235000)
+        libjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x7f746a211000)
+        libgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x7f746a029000)
+        libgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x7f7469fca000)
+        libglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x7f7469e79000)
+        libintl.so.8 => /usr/lib/libintl.so.8 (0x7f7469e67000)
+        libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x7f746a2ba000)
+        libsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x7f7469cf8000)
+        libpsl.so.5 => /usr/lib/libpsl.so.5 (0x7f7469ce4000)
+        libbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x7f7469cd5000)
+        libz.so.1 => /lib/libz.so.1 (0x7f7469cbb000)
+        libnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x7f7469c97000)
+        libmount.so.1 => /lib/libmount.so.1 (0x7f7469c55000)
+        libffi.so.8 => /usr/lib/libffi.so.8 (0x7f7469c4b000)
+        libpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x7f7469ba0000)
+        libidn2.so.0 => /usr/lib/libidn2.so.0 (0x7f7469b6e000)
+        libunistring.so.5 => /usr/lib/libunistring.so.5 (0x7f74699c6000)
+        libbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x7f74699a3000)
+        libblkid.so.1 => /lib/libblkid.so.1 (0x7f7469972000)
+        libeconf.so.0 => /usr/lib/libeconf.so.0 (0x7f7469966000)
+/var/tmp/bus $
 /var/tmp/bus $ netstat -plunt
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
