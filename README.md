@@ -89,7 +89,7 @@ cc -s -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-
 
 ```
 $ # Pull the Alpine Linux image first, if not already there:
-$ sudo docker pull alpine:edge
+$ sudo docker pull alpine:latest
 ...
 $ # Then build the microservice image:
 $ sudo docker build -ttransroutownish/busc99 .
