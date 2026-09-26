@@ -246,19 +246,18 @@ $ curl 'http://localhost:8765/route/direct?from=82&to=35390'
 
 ### Logging
 
-The microservice has the ability to log messages to a logfile and to the Unix syslog facility. When running under Ubuntu Server or Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/bus.log` logfile:
+The microservice has the ability to log messages to a logfile and to the Unix syslog facility. To enable debug logging, the `debug.enabled` setting in the microservice main config file `etc/settings.conf` should be set to `true` *before starting up the microservice*. When running under Ubuntu Server or Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/customers-api-lite.log` logfile:
 
 ```
 $ tail -f log/bus.log
+[2026-09-26][20:20:00][INFO ]  Server started on port 8765
+[2026-09-26][20:20:10][DEBUG]  from=4838 | to=524987
+[2026-09-26][20:20:10][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
-[2024-09-03][22:40:10][INFO ]  Server started on port 8765
-[2024-09-03][22:40:20][DEBUG]  from=4838 | to=524987
-[2024-09-03][22:40:20][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+[2026-09-26][20:20:30][DEBUG]  from=82 | to=35390
+[2026-09-26][20:20:30][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
-[2024-09-03][22:40:41][DEBUG]  from=82 | to=35390
-[2024-09-03][22:40:41][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
-...
-[2024-09-03][22:40:51][INFO ]  Server stopped
+[2026-09-26][20:20:50][INFO ]  Server stopped
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -266,10 +265,10 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Sep 03 22:40:10 <hostname> busd[<pid>]: Server started on port 8765
-Sep 03 22:40:20 <hostname> busd[<pid>]: from=4838 | to=524987
-Sep 03 22:40:41 <hostname> busd[<pid>]: from=82 | to=35390
-Sep 03 22:40:51 <hostname> busd[<pid>]: Server stopped
+Sep 26 20:20:00 <hostname> busd[<pid>]: Server started on port 8765
+Sep 26 20:20:10 <hostname> busd[<pid>]: from=4838 | to=524987
+Sep 26 20:20:30 <hostname> busd[<pid>]: from=82 | to=35390
+Sep 26 20:20:50 <hostname> busd[<pid>]: Server stopped
 ```
 
 Inside the running container logs might be queried also by `tail`ing the `log/bus.log` logfile:
