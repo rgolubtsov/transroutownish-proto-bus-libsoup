@@ -80,7 +80,7 @@ cc -Wall -std=c99 -O3 -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` 
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-cc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -s -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
+cc -s -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0`
 ```
 
 ### Creating a Docker image

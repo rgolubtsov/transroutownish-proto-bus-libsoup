@@ -42,7 +42,7 @@ $(EXEC): $(DEPS)
 	if [ ! -d $(BIN_DIR) ]; then \
 	    $(MKDIR) $(BIN_DIR); \
 	fi
-	$(CC) $(LDLIBS) $(LDFLAGS) $(DEPS)
+	$(CC) $(LDFLAGS) $(DEPS) $(LDLIBS)
 
 .PHONY: all clean
 
