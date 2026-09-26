@@ -105,6 +105,23 @@ $ ./bin/busd; echo $?
 ...
 ```
 
+To run the microservice as a *true* daemon, i.e. in the background, redirecting all the console output to `/dev/null`, the following form of invocation of its executable can be used:
+
+```
+$ ./bin/busd > /dev/null 2>&1 &
+[1] <pid>
+```
+
+**Note:** This will suppress all the console output only; logging to a logfile and to the Unix syslog will remain unchanged.
+
+The daemonized microservice then can be stopped gracefully at any time by issuing the following command:
+
+```
+$ kill -SIGTERM <pid>
+$
+[1]+  Done                       ./bin/busd > /dev/null 2>&1
+```
+
 ### Running a Docker image
 
 **Run** a Docker image of the microservice, deleting all stopped containers prior to that:
