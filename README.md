@@ -73,14 +73,14 @@ $ make clean
 rm -f -vR bin src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
 $
 $ make all  # <== Building the daemon.
-cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-core.c -o src/bus-core.o
-cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-controller.c -o src/bus-controller.o
-cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-handler.c -o src/bus-handler.o
-cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-helper.c -o src/bus-helper.o
+cc -Wall -std=c99 -O3 -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-core.c -o src/bus-core.o
+cc -Wall -std=c99 -O3 -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-controller.c -o src/bus-controller.o
+cc -Wall -std=c99 -O3 -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-handler.c -o src/bus-handler.o
+cc -Wall -std=c99 -O3 -c `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0` src/bus-helper.c -o src/bus-helper.o
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-cc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
+cc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -s -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
 ```
 
 ### Creating a Docker image

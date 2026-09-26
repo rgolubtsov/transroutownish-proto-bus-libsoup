@@ -23,7 +23,7 @@ DEPS = $(SRC_DIR)/$(PREF)-core.o \
 
 # Specify flags and other vars here.
 CSTD   = c99
-CFLAGS = -Wall -std=$(CSTD) -march=x86-64 -O3 -pipe -c
+CFLAGS = -Wall -std=$(CSTD) -O3 -c
 
 MKDIR   = mkdir
 RMFLAGS = -vR
@@ -31,7 +31,7 @@ RMFLAGS = -vR
 CFLAGS += `pkg-config --cflags-only-I libsoup-3.0 json-glib-1.0`
 LDLIBS  = `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0`
 
-LDFLAGS = -o $(EXEC)
+LDFLAGS = -s -o $(EXEC)
 
 # Making the first target (object files).
 %.o: %.c
