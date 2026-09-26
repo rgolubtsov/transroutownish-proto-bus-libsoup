@@ -49,20 +49,20 @@ One may consider this project has to be suitable for a wide variety of applied a
 
 ## Building
 
-The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 22.04.4 LTS x86-64)** and **Arch Linux**. Install the necessary dependencies (`build-essential`, `tcc`, `libsoup-3.0-dev`, `docker.io`):
+The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 22.04.4 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `libsoup-3.0-dev`, `libjson-glib-dev`, `docker-buildx`):
 
 * In Ubuntu Server:
 
 ```
 $ sudo apt-get update && \
-  sudo apt-get install build-essential tcc libsoup-3.0-dev docker.io -y
+  sudo apt-get install build-essential libsoup-3.0-dev libjson-glib-dev docker-buildx -y
 ...
 ```
 
 * In Arch Linux:
 
 ```
-$ sudo pacman -Syu base-devel tcc libsoup3 docker
+$ sudo pacman -Syu base-devel libsoup3 json-glib docker docker-buildx
 ...
 ```
 
@@ -80,7 +80,7 @@ cc -Wall -std=c99 -march=x86-64 -O3 -pipe -c `pkg-config --cflags-only-I libsoup
 if [ ! -d bin ]; then \
     mkdir bin; \
 fi
-tcc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
+cc `pkg-config   --libs-only-l libsoup-3.0 json-glib-1.0` -o bin/busd src/bus-core.o src/bus-controller.o src/bus-handler.o src/bus-helper.o
 ```
 
 ### Creating a Docker image
