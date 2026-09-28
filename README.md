@@ -134,91 +134,107 @@ $ sudo docker rm `sudo docker ps -aq`; \
 
 ### Exploring a Docker image payload
 
-The following is not necessary but might be considered interesting &mdash; to look up into the running container, and check out that the microservice's executable, config, log, and routes data store are at their expected places and in effect:
+The following is not necessary but might be considered somewhat interesting &mdash; to look into the running container and check out that the microservice's daemon executable, config, logfile, and routes data store are at their expected places and in effect:
 
 ```
 $ sudo docker ps -a
-CONTAINER ID   IMAGE                    COMMAND      CREATED             STATUS             PORTS                                       NAMES
-<container_id> transroutownish/busc99   "bin/busd"   About an hour ago   Up About an hour   0.0.0.0:8765->8765/tcp, :::8765->8765/tcp   busc99
+CONTAINER ID   IMAGE                    COMMAND      CREATED              STATUS              PORTS                                         NAMES
+<container_id> transroutownish/busc99   "bin/busd"   About a minute ago   Up About a minute   0.0.0.0:8765->8765/tcp, [::]:8765->8765/tcp   busc99
 $
 $ sudo docker exec -it busc99 sh; echo $?
 /var/tmp/bus $
 /var/tmp/bus $ uname -a
-Linux <container_id> 5.15.0-119-generic #129-Ubuntu SMP Fri Aug 2 19:25:20 UTC 2024 x86_64 Linux
+Linux <container_id> 7.0.0-31-generic #31-Ubuntu SMP PREEMPT_DYNAMIC Sat Aug  1 04:26:38 UTC 2026 x86_64 Linux
+/var/tmp/bus $
+/var/tmp/bus $ cat /etc/os-release /etc/alpine-release
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.24.2
+PRETTY_NAME="Alpine Linux v3.24"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+3.24.2
+/var/tmp/bus $
+/var/tmp/bus $ cc --version
+cc (Alpine 15.2.0) 15.2.0
+Copyright (C) 2025 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 /var/tmp/bus $
 /var/tmp/bus $ ls -al
-total 36
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 .
-drwxrwxrwt    1 root     root          4096 Sep  5 19:21 ..
--rw-rw-r--    1 root     root          1443 Sep  5 18:40 Makefile
-drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:22 bin
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 data
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 etc
-drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:30 log
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:22 src
+total 44
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:50 .
+drwxrwxrwt    1 root     root          4096 Sep 28 17:10 ..
+-rw-rw-r--    1 daemon   daemon        1428 Sep 26 22:50 Makefile
+drwxr-xr-x    2 daemon   daemon        4096 Sep 28 17:10 bin
+drwxr-xr-x    1 daemon   daemon        4096 Apr 11  2024 data
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:10 etc
+drwxr-xr-x    2 daemon   daemon        4096 Sep 28 17:50 log
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:10 src
 /var/tmp/bus $
 /var/tmp/bus $ ls -al bin/ data/ etc/ log/ src/
 bin/:
-total 28
-drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:22 .
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
--rwxr-xr-x    1 daemon   daemon       20328 Sep  5 19:22 busd
+total 32
+drwxr-xr-x    2 daemon   daemon        4096 Sep 28 17:10 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:50 ..
+-rwxr-xr-x    1 daemon   daemon       22496 Sep 28 17:10 busd
 
 data/:
-total 56
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 .
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
--rw-rw-r--    1 root     root         46218 Nov 13  2023 routes.txt
+total 60
+drwxr-xr-x    1 daemon   daemon        4096 Apr 11  2024 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:50 ..
+-rw-rw-r--    1 daemon   daemon       46218 Nov 13  2023 routes.txt
 
 etc/:
-total 12
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:21 .
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
--rw-rw-r--    1 root     root           808 Sep  5 18:50 settings.conf
+total 16
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:10 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:50 ..
+-rw-rw-r--    1 daemon   daemon         808 Sep 28 17:00 settings.conf
 
 log/:
 total 12
-drwxr-xr-x    2 daemon   daemon        4096 Sep  5 19:30 .
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
--rw-r--r--    1 daemon   daemon          59 Sep  5 19:30 bus.log
+drwxr-xr-x    2 daemon   daemon        4096 Sep 28 17:50 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:50 ..
+-rw-r--r--    1 daemon   daemon          59 Sep 28 17:50 bus.log
 
 src/:
 total 84
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:22 .
-drwxr-xr-x    1 daemon   daemon        4096 Sep  5 19:30 ..
--rw-rw-r--    1 root     root          3311 Sep  5 18:40 bus-controller.c
--rw-r--r--    1 daemon   daemon        4064 Sep  5 19:22 bus-controller.o
--rw-rw-r--    1 root     root          4836 Sep  5 18:40 bus-core.c
--rw-r--r--    1 daemon   daemon        5968 Sep  5 19:22 bus-core.o
--rw-rw-r--    1 root     root          8452 Sep  5 18:40 bus-handler.c
--rw-r--r--    1 daemon   daemon        8728 Sep  5 19:22 bus-handler.o
--rw-rw-r--    1 root     root          7593 Sep  5 18:40 bus-helper.c
--rw-r--r--    1 daemon   daemon       10096 Sep  5 19:22 bus-helper.o
--rw-rw-r--    1 root     root          6075 Sep  5 18:40 busd.h
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:10 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 28 17:50 ..
+-rw-rw-r--    1 daemon   daemon        3311 Sep 26 22:50 bus-controller.c
+-rw-r--r--    1 daemon   daemon        4088 Sep 28 17:10 bus-controller.o
+-rw-rw-r--    1 daemon   daemon        4836 Sep 26 22:50 bus-core.c
+-rw-r--r--    1 daemon   daemon        5944 Sep 28 17:10 bus-core.o
+-rw-rw-r--    1 daemon   daemon        8452 Sep 26 22:50 bus-handler.c
+-rw-r--r--    1 daemon   daemon        8712 Sep 28 17:10 bus-handler.o
+-rw-rw-r--    1 daemon   daemon        7593 Sep 26 22:50 bus-helper.c
+-rw-r--r--    1 daemon   daemon       10376 Sep 28 17:10 bus-helper.o
+-rw-rw-r--    1 daemon   daemon        6075 Sep 26 22:50 busd.h
 /var/tmp/bus $
 /var/tmp/bus $ ldd bin/busd
-        /lib/ld-musl-x86_64.so.1 (0x7f746a2ba000)
-        libsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x7f746a23c000)
-        libgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x7f746a235000)
-        libjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x7f746a211000)
-        libgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x7f746a029000)
-        libgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x7f7469fca000)
-        libglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x7f7469e79000)
-        libintl.so.8 => /usr/lib/libintl.so.8 (0x7f7469e67000)
-        libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x7f746a2ba000)
-        libsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x7f7469cf8000)
-        libpsl.so.5 => /usr/lib/libpsl.so.5 (0x7f7469ce4000)
-        libbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x7f7469cd5000)
-        libz.so.1 => /lib/libz.so.1 (0x7f7469cbb000)
-        libnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x7f7469c97000)
-        libmount.so.1 => /lib/libmount.so.1 (0x7f7469c55000)
-        libffi.so.8 => /usr/lib/libffi.so.8 (0x7f7469c4b000)
-        libpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x7f7469ba0000)
-        libidn2.so.0 => /usr/lib/libidn2.so.0 (0x7f7469b6e000)
-        libunistring.so.5 => /usr/lib/libunistring.so.5 (0x7f74699c6000)
-        libbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x7f74699a3000)
-        libblkid.so.1 => /lib/libblkid.so.1 (0x7f7469972000)
-        libeconf.so.0 => /usr/lib/libeconf.so.0 (0x7f7469966000)
+        /lib/ld-musl-x86_64.so.1 (0x7eac8adf7000)
+        libsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x7eac8ad69000)
+        libjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x7eac8ad45000)
+        libgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x7eac8ab55000)
+        libgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x7eac8aaf4000)
+        libglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x7eac8a997000)
+        libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x7eac8adf7000)
+        libintl.so.8 => /usr/lib/libintl.so.8 (0x7eac8a973000)
+        libsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x7eac8a7e2000)
+        libpsl.so.5 => /usr/lib/libpsl.so.5 (0x7eac8a7ce000)
+        libbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x7eac8a7bf000)
+        libz.so.1 => /usr/lib/libz.so.1 (0x7eac8a7a4000)
+        libnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x7eac8a782000)
+        libgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x7eac8a77b000)
+        libmount.so.1 => /usr/lib/libmount.so.1 (0x7eac8a733000)
+        libffi.so.8 => /usr/lib/libffi.so.8 (0x7eac8a729000)
+        libpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x7eac8a668000)
+        libidn2.so.0 => /usr/lib/libidn2.so.0 (0x7eac8a636000)
+        libunistring.so.5 => /usr/lib/libunistring.so.5 (0x7eac8a45f000)
+        libbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x7eac8a43c000)
+        libblkid.so.1 => /usr/lib/libblkid.so.1 (0x7eac8a409000)
+        libeconf.so.0 => /usr/lib/libeconf.so.0 (0x7eac8a3fe000)
 /var/tmp/bus $
 /var/tmp/bus $ netstat -plunt
 Active Internet connections (only servers)
@@ -226,11 +242,11 @@ Proto Recv-Q Send-Q Local Address           Foreign Address         State       
 tcp        0      0 0.0.0.0:8765            0.0.0.0:*               LISTEN      1/busd
 tcp        0      0 :::8765                 :::*                    LISTEN      1/busd
 /var/tmp/bus $
-/var/tmp/bus $ ps ax
+/var/tmp/bus $ ps aux
 PID   USER     TIME  COMMAND
     1 daemon    0:00 bin/busd
-    9 daemon    0:00 sh
-   19 daemon    0:00 ps ax
+   10 daemon    0:00 sh
+   23 daemon    0:00 ps aux
 /var/tmp/bus $
 /var/tmp/bus $ exit # Or simply <Ctrl-D>.
 0
