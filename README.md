@@ -308,27 +308,27 @@ Inside the running container logs might be queried also by `tail`ing the `log/bu
 
 ```
 /var/tmp/bus $ tail -f log/bus.log
-[2024-09-06][08:00:24][INFO ]  Server started on port 8765
-[2024-09-06][08:05:08][DEBUG]  from=4838 | to=524987
-[2024-09-06][08:05:08][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+[2026-09-28][17:50:00][INFO ]  Server started on port 8765
+[2026-09-28][17:50:10][DEBUG]  from=4838 | to=524987
+[2026-09-28][17:50:10][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
-[2024-09-06][08:05:22][DEBUG]  from=82 | to=35390
-[2024-09-06][08:05:22][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+[2026-09-28][17:50:30][DEBUG]  from=82 | to=35390
+[2026-09-28][17:50:30][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
 ```
 
-And of course Docker itself gives the possibility to read log messages by using the corresponding command for that:
+And of course, Docker itself gives the possibility to read log messages by using the corresponding command for that:
 
 ```
 $ sudo docker logs -f busc99
-[2024-09-06][08:00:24][INFO ]  Server started on port 8765
-[2024-09-06][08:05:08][DEBUG]  from=4838 | to=524987
-[2024-09-06][08:05:08][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+[2026-09-28][17:50:00][INFO ]  Server started on port 8765
+[2026-09-28][17:50:10][DEBUG]  from=4838 | to=524987
+[2026-09-28][17:50:10][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
-[2024-09-06][08:05:22][DEBUG]  from=82 | to=35390
-[2024-09-06][08:05:22][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
+[2026-09-28][17:50:30][DEBUG]  from=82 | to=35390
+[2026-09-28][17:50:30][DEBUG]  1 =  1 2 3 4 5 6 7 8 9 987 11 12 13 4987 415 ...
 ...
-[2024-09-06][08:10:06][INFO ]  Server stopped
+[2026-09-28][17:50:50][INFO ]  Server stopped
 ```
 
 ### Error handling
