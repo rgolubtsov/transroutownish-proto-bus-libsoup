@@ -49,7 +49,7 @@ One may consider this project has to be suitable for a wide variety of applied a
 
 ## Building
 
-The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 22.04.4 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `libsoup-3.0-dev`, `libjson-glib-dev`, `docker-buildx`):
+The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 26.04.1 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `libsoup-3.0-dev`, `libjson-glib-dev`, `docker-buildx`):
 
 * In Ubuntu Server:
 
