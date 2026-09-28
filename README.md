@@ -252,6 +252,14 @@ PID   USER     TIME  COMMAND
 0
 ```
 
+To stop a running container of the microservice gracefully at any time, simply issue the following command:
+
+```
+$ sudo docker stop busc99; echo $?
+busc99
+0
+```
+
 ## Consuming
 
 All the routes are contained in a so-called **routes data store**. It is located in the `data/` directory. The default filename for it is `routes.txt`, but it can be specified explicitly (if intended to use another one) in the `etc/settings.conf` configuration file.
