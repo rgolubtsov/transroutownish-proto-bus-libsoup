@@ -341,7 +341,7 @@ $ sudo docker logs -f busc99
 
 ### Error handling
 
-When the query string passed in a request, contains inappropriate input, or the URI endpoint doesn't contain anything else at all after its path, the microservice will respond with the **HTTP 400 Bad Request** status code, including a specific response body in JSON representation, like the following:
+When the query string passed in an incoming request contains inappropriate input or the URI endpoint doesn't contain anything else at all after its path, the microservice will respond with the HTTP `400 Bad Request` status code, including a specific response body in JSON representation which may describe a possible cause of underlying client error, like the following:
 
 ```
 $ curl 'http://localhost:8765/route/direct?from=qwerty4838&to=-i-.;--089asdf../nj524987'
